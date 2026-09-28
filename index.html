@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boyfriend Application™ — Apply Within</title>
+<title>Girlfriend Application™</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a0a2e 50%, #0d0d0d 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -16,270 +16,295 @@
     padding: 20px;
   }
   .card {
-    background: white;
+    background: #fff;
     border-radius: 24px;
     padding: 40px;
-    max-width: 560px;
+    max-width: 580px;
     width: 100%;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
   }
-  .emoji-header { font-size: 48px; text-align: center; margin-bottom: 8px; }
-  h1 { text-align: center; font-size: 24px; color: #1a1a2e; margin-bottom: 4px; }
-  .subtitle { text-align: center; color: #888; font-size: 13px; margin-bottom: 32px; }
-  .progress-bar { background: #f0f0f0; border-radius: 99px; height: 6px; margin-bottom: 28px; overflow: hidden; }
-  .progress-fill { background: linear-gradient(90deg, #e94560, #0f3460); height: 100%; border-radius: 99px; transition: width 0.4s ease; }
-  .question { display: none; }
-  .question.active { display: block; }
-  .q-label { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
-  .q-hint { font-size: 13px; color: #aaa; margin-bottom: 16px; font-style: italic; }
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option {
-    border: 2px solid #f0f0f0; border-radius: 12px; padding: 14px 18px;
-    cursor: pointer; font-size: 15px; color: #444; transition: all 0.2s; user-select: none;
-  }
-  .option:hover { border-color: #e94560; background: #fff5f7; }
-  .option.selected { border-color: #e94560; background: #fff0f3; color: #e94560; font-weight: 600; }
-  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
-  .btn { padding: 12px 28px; border: none; border-radius: 99px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  .btn-back { background: #f5f5f5; color: #888; }
-  .btn-back:hover { background: #eee; }
-  .btn-next { background: linear-gradient(135deg, #e94560, #0f3460); color: white; }
-  .btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(233,69,96,0.4); }
-  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
-  .step-counter { font-size: 13px; color: #bbb; }
+  .emoji-header { font-size: 44px; text-align: center; margin-bottom: 8px; }
+  h1 { text-align: center; font-size: 22px; font-weight: 800; color: #0d0d0d; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: #999; font-size: 12px; margin-bottom: 28px; letter-spacing: 0.3px; }
 
-  #result { display: none; text-align: center; }
-  #result .big-emoji { font-size: 72px; margin-bottom: 16px; }
-  #result h2 { font-size: 24px; color: #1a1a2e; margin-bottom: 10px; }
-  .score-badge {
+  .progress-bar { background: #f0f0f0; border-radius: 99px; height: 5px; margin-bottom: 28px; overflow: hidden; }
+  .progress-fill { background: linear-gradient(90deg, #9b59b6, #e74c3c); height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+
+  .question { display: none; }
+  .question.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .scenario-badge {
     display: inline-block;
-    background: linear-gradient(135deg, #e94560, #0f3460);
-    color: white; font-size: 20px; font-weight: 800;
-    border-radius: 99px; padding: 10px 32px; margin-bottom: 20px;
+    background: #f5f0ff;
+    color: #7d3c98;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 99px;
+    padding: 4px 12px;
+    margin-bottom: 12px;
   }
-  .verdict {
-    background: #f8f8ff; border-radius: 16px; padding: 20px;
-    border: 2px solid #e0e0f0; margin-bottom: 20px;
-    font-size: 14px; color: #666; line-height: 1.6;
+  .q-label { font-size: 17px; font-weight: 700; color: #0d0d0d; margin-bottom: 6px; line-height: 1.4; }
+  .q-hint { font-size: 12px; color: #bbb; margin-bottom: 16px; font-style: italic; }
+
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .option {
+    border: 2px solid #f0f0f0; border-radius: 12px; padding: 13px 16px;
+    cursor: pointer; font-size: 14px; color: #444; transition: all 0.18s; user-select: none; line-height: 1.4;
   }
-  #result p { color: #888; font-size: 14px; margin-bottom: 24px; }
-  .btn-restart {
-    background: linear-gradient(135deg, #e94560, #0f3460);
-    color: white; border: none; border-radius: 99px;
-    padding: 14px 36px; font-size: 16px; font-weight: 700; cursor: pointer;
-  }
-  .name-input {
+  .option:hover { border-color: #9b59b6; background: #faf5ff; }
+  .option.selected { border-color: #9b59b6; background: #f5f0ff; color: #7d3c98; font-weight: 600; }
+
+  input[type="text"] {
     width: 100%; border: 2px solid #f0f0f0; border-radius: 12px;
     padding: 14px 16px; font-size: 15px; color: #333; outline: none;
     transition: border 0.2s; font-family: inherit;
   }
-  .name-input:focus { border-color: #e94560; }
+  input:focus { border-color: #9b59b6; }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; }
+  .btn { padding: 11px 26px; border: none; border-radius: 99px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .btn-back { background: #f5f5f5; color: #aaa; }
+  .btn-next { background: linear-gradient(135deg, #9b59b6, #e74c3c); color: white; }
+  .btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(155,89,182,0.4); }
+  .btn-next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+  .step-counter { font-size: 12px; color: #ccc; }
+
+  /* Result */
+  #result { display: none; text-align: center; }
+  .result-emoji { font-size: 64px; margin-bottom: 14px; }
+  #result h2 { font-size: 22px; font-weight: 800; color: #0d0d0d; margin-bottom: 8px; }
+  .score-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #9b59b6, #e74c3c);
+    color: white; font-size: 18px; font-weight: 800;
+    border-radius: 99px; padding: 9px 28px; margin-bottom: 18px;
+  }
+  .verdict {
+    background: #fafafa; border-radius: 16px; padding: 18px 20px;
+    border: 2px solid #f0f0f0; margin-bottom: 18px;
+    font-size: 13.5px; color: #555; line-height: 1.7; text-align: left;
+  }
+  .verdict strong { color: #7d3c98; }
+  #result .sub { color: #aaa; font-size: 13px; margin-bottom: 22px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #9b59b6, #e74c3c);
+    color: white; border: none; border-radius: 99px;
+    padding: 13px 32px; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
 </style>
 </head>
 <body>
 <div class="card">
   <div id="form-section">
-    <div class="emoji-header">👑</div>
+    <div class="emoji-header">📋</div>
     <h1>Girlfriend Application™</h1>
-    <p class="subtitle">He's not perfect but he's taken applications. Fill this out carefully.</p>
+    <p class="subtitle">POSITION: 1 OPEN &nbsp;·&nbsp; APPLICATIONS REVIEWED MANUALLY &nbsp;·&nbsp; NO CALLBACKS GUARANTEED</p>
 
-    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:10%"></div></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:9%"></div></div>
 
-    <!-- Q1 -->
+    <!-- Q1: Name -->
     <div class="question active" data-q="1">
-      <div class="q-label">1. First, your name 💅</div>
-      <div class="q-hint">We run a background check on all of them so be honest.</div>
-      <input class="name-input" type="text" id="nameInput" placeholder="Your name..." oninput="handleNameInput()" />
+      <div class="scenario-badge">👤 Applicant Info</div>
+      <div class="q-label">Before we begin — what's your name?</div>
+      <div class="q-hint">Legal name preferred. We run checks.</div>
+      <input type="text" id="nameInput" placeholder="Your name..." oninput="handleName()" />
     </div>
 
     <!-- Q2 -->
     <div class="question" data-q="2">
-      <div class="q-label">2. His friends invite you to hang. You... 🎮</div>
-      <div class="q-hint">The correct answer exists. You'll find out later.</div>
+      <div class="scenario-badge">📍 Scenario 1</div>
+      <div class="q-label">It's 2am. He's still out with the boys. You haven't heard from him in 3 hours. What do you do?</div>
+      <div class="q-hint">Think before you answer. We already know what you did last time.</div>
       <div class="options">
-        <div class="option" data-val="10">Show up, have fun, leave at a reasonable hour</div>
-        <div class="option" data-val="7">Go once, say you had a great time, never go again</div>
-        <div class="option" data-val="3">Spend 45 min deciding what to wear then cancel</div>
-        <div class="option" data-val="1">Tell him his friends are "a lot" and suggest he sees them less</div>
+        <div class="option" data-val="10">Go to sleep. He's a grown man. You'll talk tomorrow.</div>
+        <div class="option" data-val="7">Send one "you good?" text and leave it at that</div>
+        <div class="option" data-val="3">Call twice, text four times, check his location</div>
+        <div class="option" data-val="0">Post something on your story and wait for him to see it</div>
       </div>
     </div>
 
     <!-- Q3 -->
     <div class="question" data-q="3">
-      <div class="q-label">3. He's watching the game. You... 📺</div>
-      <div class="q-hint">Think carefully. This one is timed.</div>
+      <div class="scenario-badge">📍 Scenario 2</div>
+      <div class="q-label">His ex likes every single one of his posts within 30 seconds. You...</div>
+      <div class="q-hint">Measured response required. No dramatics.</div>
       <div class="options">
-        <div class="option" data-val="10">Sit down, ask one genuine question, actually get into it</div>
-        <div class="option" data-val="8">Do your own thing, check in at halftime</div>
-        <div class="option" data-val="4">Sit next to him and scroll loudly</div>
-        <div class="option" data-val="1">Pick that exact moment to talk about feelings</div>
+        <div class="option" data-val="10">Say nothing. You trust him and that's his problem to handle if it becomes one</div>
+        <div class="option" data-val="7">Mention it once, hear him out, move on</div>
+        <div class="option" data-val="2">Bring it up every time you're slightly upset about anything else</div>
+        <div class="option" data-val="0">Start liking her posts to send a message somehow</div>
       </div>
     </div>
 
     <!-- Q4 -->
     <div class="question" data-q="4">
-      <div class="q-label">4. He's going through his phone. You... 📱</div>
-      <div class="q-hint">Be honest. We already know.</div>
+      <div class="scenario-badge">🌶️ Scenario 3</div>
+      <div class="q-label">He's had a long week. It's Friday night, you're at his place. He seems tired. You...</div>
+      <div class="q-hint">No wrong answers. Some very wrong answers.</div>
       <div class="options">
-        <div class="option" data-val="10">Don't even notice, you trust him</div>
-        <div class="option" data-val="7">Notice but say nothing, you're mature</div>
-        <div class="option" data-val="3">Casually reposition to see the screen</div>
-        <div class="option" data-val="0">Ask who he's texting every single time</div>
+        <div class="option" data-val="10">Order food, put something on, let him decompress — then make it a night worth remembering 😏</div>
+        <div class="option" data-val="8">Run him a shower, pour him a drink, be the vibe he needed without being asked</div>
+        <div class="option" data-val="4">Ask what's wrong 11 times until he's more stressed than when he got home</div>
+        <div class="option" data-val="1">Get annoyed that he's not giving you attention and make it about you</div>
       </div>
     </div>
 
     <!-- Q5 -->
     <div class="question" data-q="5">
-      <div class="q-label">5. How do you pick a restaurant? 🍽️</div>
-      <div class="q-hint">National emergency level question.</div>
+      <div class="scenario-badge">📍 Scenario 4</div>
+      <div class="q-label">You're both getting ready to go out. He looks incredible. You...</div>
+      <div class="q-hint">This is a character test disguised as a compliment.</div>
       <div class="options">
-        <div class="option" data-val="10">Name a place in under 30 seconds. Done. Legend.</div>
-        <div class="option" data-val="7">A few suggestions, pick one together — totally fine</div>
-        <div class="option" data-val="3">"I don't know, what do YOU want?" (infinite loop)</div>
-        <div class="option" data-val="1">Say "anything" then reject every single option he gives</div>
+        <div class="option" data-val="10">Tell him directly, mean it, and make sure he walks out confident</div>
+        <div class="option" data-val="8">Look him up and down, smile, say "you look good" — he knows</div>
+        <div class="option" data-val="3">Say nothing and secretly get competitive about who looks better</div>
+        <div class="option" data-val="1">Ask why he's "dressed up so much" for wherever you're going</div>
       </div>
     </div>
 
     <!-- Q6 -->
     <div class="question" data-q="6">
-      <div class="q-label">6. You're upset about something. You... 💬</div>
-      <div class="q-hint">The word "fine" is not a valid response.</div>
+      <div class="scenario-badge">🌶️ Scenario 5</div>
+      <div class="q-label">He mentions something he's really into that you've never tried. In bed, specifically. You...</div>
+      <div class="q-hint">Maturity test. Relax.</div>
       <div class="options">
-        <div class="option" data-val="10">Say what's wrong like a normal person</div>
-        <div class="option" data-val="8">Need an hour then come back and talk — totally valid</div>
-        <div class="option" data-val="3">Say "nothing" while visibly upset and wait to be asked 6 more times</div>
-        <div class="option" data-val="1">Post a cryptic Instagram story and wait for him to notice</div>
+        <div class="option" data-val="10">Hear him out, be real about what you're into and what you're not — no judgment either way</div>
+        <div class="option" data-val="8">Say you're curious, give it a try, communicate how it goes</div>
+        <div class="option" data-val="3">Make a face and bring it up to your friends the next day</div>
+        <div class="option" data-val="0">Shut it down immediately and act like he said something terrible</div>
       </div>
     </div>
 
     <!-- Q7 -->
     <div class="question" data-q="7">
-      <div class="q-label">7. Finally — your actual green flag 🟢</div>
-      <div class="q-hint">The one thing that genuinely makes you girlfriend material.</div>
+      <div class="scenario-badge">📍 Scenario 6</div>
+      <div class="q-label">He achieves something big — a deal, a promotion, something he worked hard for. Your first move is...</div>
+      <div class="q-hint">How you show up when it's his moment matters a lot.</div>
       <div class="options">
-        <div class="option" data-val="10">I hype him up without being asked</div>
-        <div class="option" data-val="9">I have my own life and let him have his</div>
-        <div class="option" data-val="8">I'm funny and I know it</div>
-        <div class="option" data-val="7">I remember stuff he said once and show up with it later</div>
+        <div class="option" data-val="10">Celebrate like it's yours too. Because it kind of is — you were there during the grind.</div>
+        <div class="option" data-val="8">Tell him you're proud, mean it, take him out</div>
+        <div class="option" data-val="3">Say "congrats" and immediately bring up something you want</div>
+        <div class="option" data-val="0">Feel weirdly threatened and get quiet</div>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question" data-q="8">
+      <div class="scenario-badge">🎯 Final Question</div>
+      <div class="q-label">Real talk — what do you actually bring to the table?</div>
+      <div class="q-hint">This one decides everything. Be honest.</div>
+      <div class="options">
+        <div class="option" data-val="10">I'm consistent, I communicate, and I make his life noticeably better</div>
+        <div class="option" data-val="8">I'm fun, I'm loyal, and I don't bring unnecessary drama</div>
+        <div class="option" data-val="5">I look good and I try my best — it's a work in progress</div>
+        <div class="option" data-val="2">I need a lot but I give a lot too... when I feel like it</div>
       </div>
     </div>
 
     <div class="nav">
       <button class="btn btn-back" id="backBtn" onclick="goBack()" style="visibility:hidden">← Back</button>
-      <span class="step-counter" id="stepCounter">1 of 7</span>
+      <span class="step-counter" id="stepCounter">1 of 8</span>
       <button class="btn btn-next" id="nextBtn" onclick="goNext()" disabled>Next →</button>
     </div>
   </div>
 
   <!-- Result -->
   <div id="result">
-    <div class="big-emoji" id="resultEmoji"></div>
-    <h2 id="resultTitle"></h2>
-    <div class="score-badge" id="resultScore"></div>
-    <div class="verdict" id="resultVerdict"></div>
-    <p id="resultText"></p>
-    <button class="btn-restart" onclick="restart()">Reapply (he's worth it)</button>
+    <div class="result-emoji" id="rEmoji"></div>
+    <h2 id="rTitle"></h2>
+    <div class="score-badge" id="rScore"></div>
+    <div class="verdict" id="rVerdict"></div>
+    <p class="sub" id="rSub"></p>
+    <button class="btn-restart" onclick="restart()">Reapply 🔁</button>
   </div>
 </div>
 
 <script>
-  let current = 1;
-  const total = 7;
-  const answers = {};
-  let applicantName = '';
+  let cur = 1, total = 8, answers = {}, name = '';
 
-  function handleNameInput() {
-    const val = document.getElementById('nameInput').value.trim();
-    applicantName = val;
-    document.getElementById('nextBtn').disabled = val.length < 2;
+  function handleName() {
+    name = document.getElementById('nameInput').value.trim();
+    document.getElementById('nextBtn').disabled = name.length < 2;
   }
 
-  document.querySelectorAll('.option').forEach(opt => {
-    opt.addEventListener('click', function() {
-      const q = this.closest('.question');
-      q.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.option').forEach(o => {
+    o.addEventListener('click', function() {
+      this.closest('.question').querySelectorAll('.option').forEach(x => x.classList.remove('selected'));
       this.classList.add('selected');
-      answers[current] = parseInt(this.dataset.val);
+      answers[cur] = parseInt(this.dataset.val);
       document.getElementById('nextBtn').disabled = false;
     });
   });
 
   function goNext() {
-    if (current === 1 && applicantName.length < 2) return;
-    if (current > 1 && !answers[current]) return;
-    if (current === total) { showResult(); return; }
-    document.querySelector(`.question[data-q="${current}"]`).classList.remove('active');
-    current++;
-    document.querySelector(`.question[data-q="${current}"]`).classList.add('active');
-    if (current === 1) {
-      document.getElementById('nextBtn').disabled = applicantName.length < 2;
-    } else {
-      document.getElementById('nextBtn').disabled = !answers[current];
-    }
-    updateProgress();
+    if (cur === 1 && name.length < 2) return;
+    if (cur > 1 && answers[cur] === undefined) return;
+    if (cur === total) { showResult(); return; }
+    document.querySelector(`.question[data-q="${cur}"]`).classList.remove('active');
+    cur++;
+    document.querySelector(`.question[data-q="${cur}"]`).classList.add('active');
+    document.getElementById('nextBtn').disabled = cur === 1 ? name.length < 2 : answers[cur] === undefined;
+    update();
   }
 
   function goBack() {
-    document.querySelector(`.question[data-q="${current}"]`).classList.remove('active');
-    current--;
-    document.querySelector(`.question[data-q="${current}"]`).classList.add('active');
-    if (current === 1) {
-      document.getElementById('nextBtn').disabled = applicantName.length < 2;
-    } else {
-      document.getElementById('nextBtn').disabled = false;
-    }
-    updateProgress();
+    document.querySelector(`.question[data-q="${cur}"]`).classList.remove('active');
+    cur--;
+    document.querySelector(`.question[data-q="${cur}"]`).classList.add('active');
+    document.getElementById('nextBtn').disabled = false;
+    update();
   }
 
-  function updateProgress() {
-    document.getElementById('progress').style.width = (current / total * 100) + '%';
-    document.getElementById('stepCounter').textContent = current + ' of ' + total;
-    document.getElementById('backBtn').style.visibility = current > 1 ? 'visible' : 'hidden';
-    document.getElementById('nextBtn').textContent = current === total ? 'Submit Application 💌' : 'Next →';
+  function update() {
+    document.getElementById('progress').style.width = (cur / total * 100) + '%';
+    document.getElementById('stepCounter').textContent = cur + ' of ' + total;
+    document.getElementById('backBtn').style.visibility = cur > 1 ? 'visible' : 'hidden';
+    document.getElementById('nextBtn').textContent = cur === total ? 'Submit Application 💌' : 'Next →';
   }
 
   function showResult() {
-    const score = Object.values(answers).reduce((a, b) => a + b, 0);
-    const pct = Math.round(score / 63 * 100);
-    const name = applicantName || 'Applicant';
+    const score = Object.values(answers).reduce((a,b) => a+b, 0);
+    const pct = Math.round(score / 66 * 100);
+    const n = name || 'Applicant';
 
     document.getElementById('form-section').style.display = 'none';
     document.getElementById('result').style.display = 'block';
-    document.getElementById('resultScore').textContent = pct + '% Girlfriend Material';
+    document.getElementById('rScore').textContent = pct + '% Girlfriend Material';
 
-    let emoji, title, verdict, text;
-    if (pct >= 80) {
+    let emoji, title, verdict, sub;
+    if (pct >= 82) {
       emoji = '✅';
-      title = name + ', you\'re hired.';
-      verdict = '"Low drama. Communicates like an adult. Lets him watch the game. This is incredibly rare and frankly suspicious — we\'re looking into it."';
-      text = 'Application approved pending one final interview (dinner, his pick, under 30 seconds decision time — you already know the rules).';
-    } else if (pct >= 60) {
-      title = name + ', under review.';
+      title = n + ' — Application Approved';
+      verdict = `<strong>Assessment:</strong> You passed almost everything. The 2am scenario, the ex scenario, the bedroom question — all handled with rare maturity. You show up, hype him up, and you don't make his wins about you. This is genuinely uncommon.<br><br><strong>Verdict:</strong> Position offered. Terms negotiable. Show up as advertised.`;
+      sub = 'Report to the first date immediately. Dress accordingly.';
+    } else if (pct >= 65) {
       emoji = '🤔';
-      verdict = '"Some strong answers. A few concerning ones we are choosing to ignore for now. The restaurant thing needs work."';
-      text = 'You have real potential. The committee will deliberate. Do not contact us, we will contact you.';
-    } else if (pct >= 35) {
+      title = n + ' — Strong Candidate';
+      verdict = `<strong>Assessment:</strong> Mostly solid. A few answers revealed some tendencies we're keeping an eye on — specifically around late nights and whose ex that was. The instincts are good but the execution needs polish.<br><br><strong>Verdict:</strong> Shortlisted. Pending one in-person evaluation where the real answers come out.`;
+      sub = 'Do not rehearse. That\'s how you get caught.';
+    } else if (pct >= 40) {
       emoji = '📋';
-      title = name + ', you\'re waitlisted.';
-      verdict = '"We see the effort. The cryptic story thing has to go. The infinite restaurant loop has to go. Everything else... maybe."';
-      text = 'Waitlist position: 4. Spots open up when other applicants violate the terms. Stay ready.';
+      title = n + ' — Under Consideration';
+      verdict = `<strong>Assessment:</strong> There's potential in here somewhere, buried under a couple of red flags we almost missed. The story post at 2am and the bedroom face were noted. These things don't disappear, they just get managed.<br><br><strong>Verdict:</strong> Waitlisted. Position may open up. Work on the communication question first — that's the one that ended this.`;
+      sub = 'We believe in growth. Reapply in 60 days.';
     } else {
-      emoji = '💌';
-      title = name + ', application received.';
-      verdict = '"Your application has been received, reviewed carefully, and placed in a very special folder. That folder does not exist. We made it up just now."';
-      text = 'The good news: self-awareness is a skill. You can learn it. We believe in you. Reapply in 30 days.';
+      emoji = '📩';
+      title = n + ' — Application Received';
+      verdict = `<strong>Assessment:</strong> Your application was received, reviewed by the full committee, and discussed at length. The discussion was brief.<br><br><strong>Verdict:</strong> At this time we are unable to move forward. This is not personal. It is extremely personal. The "make it about you when he's tired" answer alone required a separate meeting.`;
+      sub = 'The good news: awareness is step one. You just completed it.';
     }
 
-    document.getElementById('resultEmoji').textContent = emoji;
-    document.getElementById('resultTitle').textContent = title;
-    document.getElementById('resultVerdict').textContent = verdict;
-    document.getElementById('resultText').textContent = text;
+    document.getElementById('rEmoji').textContent = emoji;
+    document.getElementById('rTitle').textContent = title;
+    document.getElementById('rVerdict').innerHTML = verdict;
+    document.getElementById('rSub').textContent = sub;
   }
 
   function restart() {
-    current = 1;
-    Object.keys(answers).forEach(k => delete answers[k]);
-    applicantName = '';
+    cur = 1; answers = {}; name = '';
     document.getElementById('nameInput').value = '';
     document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
     document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
@@ -287,10 +312,10 @@
     document.getElementById('result').style.display = 'none';
     document.getElementById('form-section').style.display = 'block';
     document.getElementById('nextBtn').disabled = true;
-    updateProgress();
+    update();
   }
 
-  updateProgress();
+  update();
 </script>
 </body>
 </html>
