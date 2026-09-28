@@ -2,654 +2,280 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Girlfriend Application™</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Girlfriend Application™ · Official Hiring Portal</title>
+<meta name="description" content="1 position open. Applications reviewed by a highly biased committee.">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0d0d0d 0%, #1a0a2e 60%, #0d0d0d 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.card {
-  background: #fff;
-  border-radius: 24px;
-  padding: 36px;
-  max-width: 580px;
-  width: 100%;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-  position: relative;
-  overflow: hidden;
-}
-.emoji-header { font-size: 42px; text-align: center; margin-bottom: 8px; }
-h1 { text-align: center; font-size: 22px; font-weight: 800; color: #0d0d0d; margin-bottom: 4px; }
-.subtitle { text-align: center; color: #999; font-size: 11.5px; margin-bottom: 24px; letter-spacing: 0.3px; }
-.progress-bar { background: #f0f0f0; border-radius: 99px; height: 5px; margin-bottom: 24px; overflow: hidden; }
-.progress-fill { background: linear-gradient(90deg, #9b59b6, #e74c3c); height: 100%; border-radius: 99px; transition: width 0.4s ease; }
-
-/* Sections */
-.section { display: none; animation: fadeUp 0.35s ease; }
-.section.active { display: block; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Badges */
-.badge {
-  display: inline-block; border-radius: 99px; padding: 4px 12px;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 12px;
-}
-.badge-scenario { background: #f5f0ff; color: #7d3c98; }
-.badge-game { background: #fff3e0; color: #e67e22; }
-
-.q-label { font-size: 17px; font-weight: 700; color: #0d0d0d; margin-bottom: 6px; line-height: 1.45; }
-.q-hint { font-size: 12px; color: #bbb; margin-bottom: 16px; font-style: italic; }
-
-.options { display: flex; flex-direction: column; gap: 9px; }
-.option {
-  border: 2px solid #f0f0f0; border-radius: 12px; padding: 13px 16px;
-  cursor: pointer; font-size: 14px; color: #444; transition: all 0.18s; line-height: 1.4;
-}
-.option:hover { border-color: #9b59b6; background: #faf5ff; }
-.option.selected { border-color: #9b59b6; background: #f5f0ff; color: #7d3c98; font-weight: 600; }
-
-input[type="text"] {
-  width: 100%; border: 2px solid #f0f0f0; border-radius: 12px;
-  padding: 14px 16px; font-size: 15px; color: #333; outline: none;
-  transition: border 0.2s; font-family: inherit;
-}
-input:focus { border-color: #9b59b6; }
-
-.nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
-.btn { padding: 11px 26px; border: none; border-radius: 99px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.btn-back { background: #f5f5f5; color: #aaa; }
-.btn-next { background: linear-gradient(135deg, #9b59b6, #e74c3c); color: white; }
-.btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(155,89,182,0.35); }
-.btn-next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
-.step-counter { font-size: 12px; color: #ccc; }
-
-/* ===== GAME 1: REACTION TEST ===== */
-.phone-mock {
-  background: #1a1a2e; border-radius: 20px; padding: 20px;
-  margin: 10px 0 16px; min-height: 160px;
-  display: flex; flex-direction: column; justify-content: flex-end; gap: 8px;
-}
-.msg-bubble {
-  display: inline-block; padding: 10px 14px; border-radius: 14px;
-  font-size: 14px; max-width: 75%;
-}
-.msg-him { background: #333; color: #fff; align-self: flex-start; border-radius: 14px 14px 14px 4px; }
-.msg-him.hidden { opacity: 0; }
-.tap-btn {
-  width: 100%; padding: 16px; border: none; border-radius: 14px;
-  font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s;
-  background: linear-gradient(135deg, #9b59b6, #e74c3c); color: white;
-}
-.tap-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.reaction-result { text-align: center; font-size: 15px; font-weight: 700; margin-top: 10px; color: #333; }
-
-/* ===== GAME 2: RAPID FIRE ===== */
-.timer-bar-wrap { background: #f0f0f0; border-radius: 99px; height: 8px; margin-bottom: 18px; overflow: hidden; }
-.timer-bar { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #2ecc71, #e74c3c); transition: width 0.1s linear; }
-.rf-question { font-size: 17px; font-weight: 700; color: #0d0d0d; margin-bottom: 14px; line-height: 1.4; text-align: center; }
-.rf-options { display: flex; gap: 10px; }
-.rf-opt {
-  flex: 1; padding: 14px 8px; border: 2px solid #f0f0f0; border-radius: 14px;
-  text-align: center; font-size: 13.5px; font-weight: 600; cursor: pointer;
-  color: #444; transition: all 0.15s; line-height: 1.3;
-}
-.rf-opt:hover { border-color: #9b59b6; background: #faf5ff; }
-.rf-opt.picked-a { border-color: #9b59b6; background: #f5f0ff; color: #7d3c98; }
-.rf-opt.picked-b { border-color: #e74c3c; background: #fff0f0; color: #e74c3c; }
-.rf-score-display { text-align: center; font-size: 14px; color: #999; margin-top: 12px; }
-.rf-done { text-align: center; }
-.rf-done .big { font-size: 40px; }
-.rf-done p { color: #666; font-size: 14px; margin-top: 8px; line-height: 1.5; }
-
-/* ===== GAME 3: TEXT DECODE ===== */
-.text-screen {
-  background: #f5f5f5; border-radius: 16px; padding: 16px 18px;
-  margin-bottom: 16px; font-size: 15px;
-}
-.text-screen .from { font-size: 11px; color: #999; margin-bottom: 6px; font-weight: 700; letter-spacing: 0.5px; }
-.text-screen .msg { font-size: 18px; font-weight: 800; color: #0d0d0d; }
-.text-screen .time { font-size: 11px; color: #bbb; margin-top: 4px; }
-.decode-opts { display: flex; flex-direction: column; gap: 8px; }
-.decode-opt {
-  border: 2px solid #f0f0f0; border-radius: 12px; padding: 12px 15px;
-  cursor: pointer; font-size: 13.5px; color: #444; transition: all 0.15s;
-}
-.decode-opt:hover { border-color: #9b59b6; background: #faf5ff; }
-.decode-opt.selected { border-color: #9b59b6; background: #f5f0ff; color: #7d3c98; font-weight: 600; }
-.decode-feedback {
-  margin-top: 12px; padding: 12px 16px; border-radius: 12px;
-  font-size: 13.5px; line-height: 1.5; display: none;
-}
-.decode-feedback.good { background: #f0fff4; color: #27ae60; border: 2px solid #a9dfbf; }
-.decode-feedback.bad { background: #fff5f5; color: #e74c3c; border: 2px solid #f5b7b1; }
-
-/* ===== RESULT ===== */
-#result { display: none; text-align: center; }
-.result-emoji { font-size: 60px; margin-bottom: 14px; }
-#result h2 { font-size: 22px; font-weight: 800; color: #0d0d0d; margin-bottom: 8px; }
-.score-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #9b59b6, #e74c3c);
-  color: white; font-size: 18px; font-weight: 800;
-  border-radius: 99px; padding: 9px 28px; margin-bottom: 18px;
-}
-.verdict {
-  background: #fafafa; border-radius: 16px; padding: 18px 20px;
-  border: 2px solid #f0f0f0; margin-bottom: 16px;
-  font-size: 13.5px; color: #555; line-height: 1.7; text-align: left;
-}
-.verdict strong { color: #7d3c98; }
-.score-breakdown {
-  display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center;
-}
-.score-pill {
-  background: #f5f0ff; border-radius: 99px; padding: 6px 14px;
-  font-size: 12px; color: #7d3c98; font-weight: 600;
-}
-#result .sub { color: #aaa; font-size: 13px; margin-bottom: 22px; }
-.btn-restart {
-  background: linear-gradient(135deg, #9b59b6, #e74c3c);
-  color: white; border: none; border-radius: 99px;
-  padding: 13px 32px; font-size: 15px; font-weight: 700; cursor: pointer;
-}
+:root{--pink:#ff2e7e;--ink:#111;--cream:#fff8ef;--lime:#c6ff3d;--purple:#7b2cff;--red:#ff3b30}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Bricolage Grotesque',system-ui,sans-serif;background:var(--ink);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,#ff2e7e55,transparent 40%),radial-gradient(circle at 90% 90%,#7b2cff66,transparent 45%);pointer-events:none}
+.card{position:relative;background:var(--cream);border-radius:28px;width:100%;max-width:460px;min-height:600px;padding:26px 22px 22px;box-shadow:0 0 0 3px var(--ink),10px 10px 0 var(--pink);overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.logo{background:var(--ink);color:var(--cream);padding:5px 10px;border-radius:99px}
+.hearts{font-size:14px;letter-spacing:2px}
+.bar{height:10px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;margin-bottom:22px;background:#fff}
+.bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,var(--pink) 0 10px,#ff6fa6 10px 20px);transition:width .5s}
+.tag{display:inline-block;border:2px solid var(--ink);border-radius:99px;padding:4px 11px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;background:var(--lime)}
+.tag.spicy{background:var(--red);color:#fff}.tag.game{background:var(--purple);color:#fff}
+h1{font-size:36px;line-height:1;font-weight:800;letter-spacing:-1.5px;margin-bottom:10px}
+h2{font-size:22px;line-height:1.2;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.hint{font-size:13px;color:#777;margin-bottom:16px}
+.scribble{font-family:Caveat,cursive;color:var(--pink);font-size:24px;transform:rotate(-3deg);display:inline-block}
+.opt{display:block;width:100%;text-align:left;border:2px solid var(--ink);background:#fff;border-radius:16px;padding:13px 15px;margin-bottom:10px;font:600 14.5px/1.35 inherit;font-family:inherit;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.opt:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.opt.pick{background:var(--pink);color:#fff}
+.big{display:block;width:100%;border:3px solid var(--ink);background:var(--pink);color:#fff;border-radius:18px;padding:16px;font:800 17px inherit;font-family:inherit;cursor:pointer;box-shadow:5px 5px 0 var(--ink);margin-top:14px}
+.big:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--ink)}
+.big:disabled{opacity:.4}
+.big.alt{background:#fff;color:var(--ink)}
+input.name{width:100%;border:3px solid var(--ink);border-radius:16px;padding:16px;font:700 20px inherit;font-family:inherit;background:#fff;outline:none}
+.fine{font-size:10.5px;color:#999;margin-top:14px;line-height:1.4}
+/* HR toast */
+.toast{position:absolute;left:18px;right:18px;bottom:18px;background:var(--ink);color:var(--cream);border-radius:16px;padding:14px 16px;font-size:14px;line-height:1.4;transform:translateY(160%);transition:transform .35s cubic-bezier(.3,1.5,.6,1);z-index:30}
+.toast.show{transform:translateY(0)}
+.toast b{color:var(--lime);display:block;font-size:11px;letter-spacing:1px;margin-bottom:3px}
+/* Flag game */
+.arena{position:relative;height:340px;border:3px solid var(--ink);border-radius:20px;background:#fff;overflow:hidden;touch-action:manipulation}
+.hud{display:flex;justify-content:space-between;font-weight:800;margin-bottom:8px;font-size:15px}
+.fall{position:absolute;padding:7px 11px;border-radius:99px;border:2px solid var(--ink);font-size:12.5px;font-weight:800;white-space:nowrap;cursor:pointer;user-select:none}
+.fall.r{background:#ffe1e1}.fall.g{background:#e6ffd1}
+.pop{position:absolute;font-weight:800;font-size:18px;pointer-events:none;animation:up .7s forwards}
+@keyframes up{to{transform:translateY(-40px);opacity:0}}
+/* Swipe */
+.swipe{position:relative;height:260px;margin:6px 0 14px}
+.sc{position:absolute;inset:0;border:3px solid var(--ink);border-radius:22px;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px;box-shadow:6px 6px 0 var(--ink);transition:transform .4s,opacity .4s}
+.sc .e{font-size:56px;margin-bottom:12px}.sc p{font-size:18px;font-weight:800;line-height:1.25}
+.sc.outL{transform:translateX(-140%) rotate(-25deg);opacity:0}.sc.outR{transform:translateX(140%) rotate(25deg);opacity:0}
+.row{display:flex;gap:12px}.row .big{margin-top:0}
+/* Phone */
+.phone{background:#000;border-radius:26px;padding:16px 12px;min-height:250px;display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.ph-head{color:#aaa;font-size:11px;text-align:center;margin-bottom:6px}
+.bub{max-width:78%;padding:9px 13px;border-radius:18px;font-size:14.5px;animation:pin .3s}
+.bub.him{background:#2c2c2e;color:#fff;align-self:flex-start}
+.bub.me{background:#0a84ff;color:#fff;align-self:flex-end}
+.typing{align-self:flex-start;background:#2c2c2e;color:#aaa;border-radius:18px;padding:9px 14px;font-size:14px}
+@keyframes pin{from{transform:scale(.6);opacity:0}}
+/* Lie detector */
+canvas.poly{width:100%;height:150px;border:3px solid var(--ink);border-radius:18px;background:#fffdf5;display:block;margin-bottom:12px}
+.hold{user-select:none;-webkit-user-select:none;touch-action:none}
+.verdict{font-size:30px;font-weight:800;text-align:center;margin:8px 0;letter-spacing:-1px}
+/* Rapid */
+.timer{height:12px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;margin-bottom:18px}
+.timer i{display:block;height:100%;background:var(--lime);width:100%}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vs .opt{text-align:center;min-height:110px;display:flex;align-items:center;justify-content:center}
+.or{text-align:center;font-family:Caveat;font-size:26px;color:var(--pink);margin:6px 0}
+/* sign */
+canvas.sig{width:100%;height:150px;border:3px dashed var(--ink);border-radius:18px;background:#fff;touch-action:none;display:block}
+.contract{font-size:12.5px;line-height:1.55;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:12px 14px;margin-bottom:12px;max-height:170px;overflow:auto}
+.contract li{margin-left:16px;margin-bottom:4px}
+/* result */
+.cert{border:3px double var(--ink);border-radius:18px;padding:20px 16px;text-align:center;background:#fff;position:relative}
+.stamp{position:absolute;top:14px;right:10px;transform:rotate(14deg);border:3px solid;border-radius:10px;padding:4px 10px;font-weight:800;font-size:14px;letter-spacing:1px}
+.pct{font-size:64px;font-weight:800;letter-spacing:-3px;line-height:1;margin:8px 0 2px;color:var(--pink)}
+.pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0}
+.pill{border:2px solid var(--ink);border-radius:99px;padding:4px 10px;font-size:11.5px;font-weight:800;background:var(--cream)}
+.conf{position:fixed;top:-20px;font-size:22px;animation:fall linear forwards;pointer-events:none;z-index:99}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.shake{animation:sh .4s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 </style>
 </head>
 <body>
-<div class="card">
-
-  <!-- HEADER (always visible during form) -->
-  <div id="header-area">
-    <div class="emoji-header">📋</div>
-    <h1>Girlfriend Application™</h1>
-    <p class="subtitle">POSITION: 1 OPEN &nbsp;·&nbsp; NO CALLBACKS GUARANTEED &nbsp;·&nbsp; INCLUDES SKILL TESTS</p>
-    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-  </div>
-
-  <!-- ======= SECTION 1: NAME ======= -->
-  <div class="section active" id="s1">
-    <div class="badge badge-scenario">👤 Applicant Info</div>
-    <div class="q-label">Before we begin — what's your name?</div>
-    <div class="q-hint">Legal name preferred. We run checks.</div>
-    <input type="text" id="nameInput" placeholder="Your name..." oninput="handleName()" />
-    <div class="nav">
-      <span></span>
-      <span class="step-counter" id="stepCounter"></span>
-      <button class="btn btn-next" id="nextBtn" onclick="nextSection()" disabled>Next →</button>
-    </div>
-  </div>
-
-  <!-- ======= SECTION 2: SCENARIO ======= -->
-  <div class="section" id="s2">
-    <div class="badge badge-scenario">📍 Scenario 1</div>
-    <div class="q-label">It's 2am. He's still out with the boys. Last text was 3 hours ago. What do you do?</div>
-    <div class="q-hint">Think before you answer. We know what you did last time.</div>
-    <div class="options">
-      <div class="option" data-val="10" onclick="pickOption(this)">Go to sleep. He's a grown man.</div>
-      <div class="option" data-val="7" onclick="pickOption(this)">Send one "you good?" and leave it</div>
-      <div class="option" data-val="2" onclick="pickOption(this)">Call twice, text four times, check his location</div>
-      <div class="option" data-val="0" onclick="pickOption(this)">Post something on my story and wait for him to see it</div>
-    </div>
-    <div class="nav">
-      <button class="btn btn-back" onclick="prevSection()">← Back</button>
-      <span class="step-counter" id="stepCounter2"></span>
-      <button class="btn btn-next" id="nextBtn2" onclick="nextSection()" disabled>Next →</button>
-    </div>
-  </div>
-
-  <!-- ======= SECTION 3: SCENARIO ======= -->
-  <div class="section" id="s3">
-    <div class="badge badge-scenario">📍 Scenario 2</div>
-    <div class="q-label">He's had a long week. Friday night at his place — he seems exhausted. You...</div>
-    <div class="q-hint">No wrong answers. (Some very wrong answers.)</div>
-    <div class="options">
-      <div class="option" data-val="10" onclick="pickOption(this)">Order food, put something on, let him breathe — then make it a night worth remembering 😏</div>
-      <div class="option" data-val="8" onclick="pickOption(this)">Run him a shower, pour him a drink, be the vibe he needed without being asked</div>
-      <div class="option" data-val="3" onclick="pickOption(this)">Ask what's wrong 9 times until he's more stressed than before</div>
-      <div class="option" data-val="0" onclick="pickOption(this)">Get annoyed he's not giving you attention and make it about me</div>
-    </div>
-    <div class="nav">
-      <button class="btn btn-back" onclick="prevSection()">← Back</button>
-      <span></span>
-      <button class="btn btn-next" id="nextBtn3" onclick="nextSection()" disabled>Next →</button>
-    </div>
-  </div>
-
-  <!-- ======= SECTION 4: GAME 1 — REACTION TEST ======= -->
-  <div class="section" id="s4">
-    <div class="badge badge-game">🎮 Mini Game 1 of 3 — Reaction Test</div>
-    <div class="q-label">How fast do you actually respond when he texts?</div>
-    <div class="q-hint">Hit the button the SECOND his message appears. No cheating.</div>
-    <div class="phone-mock" id="phoneMock">
-      <div class="msg-bubble msg-him" id="prevMsg1">hey you busy tonight?</div>
-      <div class="msg-bubble msg-him hidden" id="newMsg" style="align-self:flex-start">just thinking about you 🖤</div>
-    </div>
-    <button class="tap-btn" id="tapBtn" onclick="tapReaction()" disabled>Waiting for his message...</button>
-    <div class="reaction-result" id="reactionResult"></div>
-    <div class="nav">
-      <button class="btn btn-back" onclick="prevSection()">← Back</button>
-      <span></span>
-      <button class="btn btn-next" id="nextBtn4" onclick="nextSection()" disabled>Next →</button>
-    </div>
-  </div>
-
-  <!-- ======= SECTION 5: SCENARIO ======= -->
-  <div class="section" id="s5">
-    <div class="badge badge-scenario">📍 Scenario 3</div>
-    <div class="q-label">His ex likes every post within 30 seconds. Every. Single. One. You...</div>
-    <div class="q-hint">Measured response required.</div>
-    <div class="options">
-      <div class="option" data-val="10" onclick="pickOption(this)">Say nothing. I trust him and that's his problem to handle if needed</div>
-      <div class="option" data-val="7" onclick="pickOption(this)">Mention it once calmly, hear him out, actually move on</div>
-      <div class="option" data-val="2" onclick="pickOption(this)">Bring it up every time I'm slightly upset about anything else</div>
-      <div class="option" data-val="0" onclick="pickOption(this)">Start liking her posts to "send a message"</div>
-    </div>
-    <div class="nav">
-      <button class="btn btn-back" onclick="prevSection()">← Back</button>
-      <span></span>
-      <button class="btn btn-next" id="nextBtn5" onclick="nextSection()" disabled>Next →</button>
-    </div>
-  </div>
-
-  <!-- ======= SECTION 6: GAME 2 — RAPID FIRE ======= -->
-  <div class="section" id="s6">
-    <div class="badge badge-game">⚡ Mini Game 2 of 3 — Rapid Fire Would You Rather</div>
-    <div class="q-label" style="text-align:center;margin-bottom:14px">5 questions. 8 seconds each. No overthinking.</div>
-    <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
-    <div id="rfGame">
-      <div class="rf-question" id="rfQ"></div>
-      <div class="rf-options">
-        <div class="rf-opt" id="rfA" onclick="pickRF('A')"></div>
-        <div class="rf-opt" id="rfB" onclick="pickRF('B')"></div>
-      </div>
-      <div class="rf-score-display" id="rfScoreDisplay"></div>
-    </div>
-    <div class="rf-done" id="rfDone" style="display:none">
-      <div class="big" id="rfDoneEmoji"></div>
-      <p id="rfDoneMsg"></p>
-    </div>
-    <div class="nav">
-      <button class="btn btn-back" onclick="prevSection()" id="rfBackBtn">← Back</button>
-      <span></span>
-      <button class="btn btn-next" id="nextBtn6" onclick="nextSection()" disabled>Next →</button>
-    </div>
-  </div>
-
-  <!-- ======= SECTION 7: SCENARIO ======= -->
-  <div class="section" id="s7">
-    <div class="badge badge-scenario">🌶️ Scenario 4</div>
-    <div class="q-label">He mentions something he wants to try. In bed. Specifically. You...</div>
-    <div class="q-hint">Maturity test. Relax.</div>
-    <div class="options">
-      <div class="option" data-val="10" onclick="pickOption(this)">Hear him out, be real about what you're into and what you're not — no weird energy</div>
-      <div class="option" data-val="8" onclick="pickOption(this)">Say you're curious, try it, communicate how it went after</div>
-      <div class="option" data-val="2" onclick="pickOption(this)">Make a face and bring it up to your friends the next day</div>
-      <div class="option" data-val="0" onclick="pickOption(this)">Shut it down and act like he said something terrible</div>
-    </div>
-    <div class="nav">
-      <button class="btn btn-back" onclick="prevSection()">← Back</button>
-      <span></span>
-      <button class="btn btn-next" id="nextBtn7" onclick="nextSection()" disabled>Next →</button>
-    </div>
-  </div>
-
-  <!-- ======= SECTION 8: GAME 3 — TEXT DECODER ======= -->
-  <div class="section" id="s8">
-    <div class="badge badge-game">🔍 Mini Game 3 of 3 — Decode His Texts</div>
-    <div class="q-label">He sent you these. What does he actually mean?</div>
-    <div class="q-hint">2 texts. No second chances.</div>
-
-    <div id="decode1">
-      <div class="text-screen">
-        <div class="from">HIM · iMessage</div>
-        <div class="msg">k</div>
-        <div class="time">11:47 PM · Delivered</div>
-      </div>
-      <div class="decode-opts">
-        <div class="decode-opt" onclick="pickDecode(this, 'd1', false)">He's upset about something and is punishing me with one letter</div>
-        <div class="decode-opt" onclick="pickDecode(this, 'd1', false)">He wants to break up and this is how it starts</div>
-        <div class="decode-opt" onclick="pickDecode(this, 'd1', true)">He acknowledged what you said and moved on. Men do this. It means nothing.</div>
-        <div class="decode-opt" onclick="pickDecode(this, 'd1', false)">I should send a paragraph asking if he's okay</div>
-      </div>
-      <div class="decode-feedback" id="fb1"></div>
-    </div>
-
-    <div id="decode2" style="margin-top:20px; display:none">
-      <div class="text-screen">
-        <div class="from">HIM · iMessage</div>
-        <div class="msg">"I'm almost there" (sent 40 mins ago)</div>
-        <div class="time">Still not there</div>
-      </div>
-      <div class="decode-opts">
-        <div class="decode-opt" onclick="pickDecode(this, 'd2', false)">He lied to me and I should spiral immediately</div>
-        <div class="decode-opt" onclick="pickDecode(this, 'd2', true)">Men have no concept of time. He's driving. He'll be there. Calm down.</div>
-        <div class="decode-opt" onclick="pickDecode(this, 'd2', false)">Send "WHERE ARE YOU" in all caps</div>
-        <div class="decode-opt" onclick="pickDecode(this, 'd2', false)">Post a countdown on your story</div>
-      </div>
-      <div class="decode-feedback" id="fb2"></div>
-    </div>
-
-    <div class="nav">
-      <button class="btn btn-back" onclick="prevSection()">← Back</button>
-      <span></span>
-      <button class="btn btn-next" id="nextBtn8" onclick="nextSection()" disabled>Next →</button>
-    </div>
-  </div>
-
-  <!-- ======= SECTION 9: FINAL SCENARIO ======= -->
-  <div class="section" id="s9">
-    <div class="badge badge-scenario">🎯 Final Question</div>
-    <div class="q-label">Real talk — what do you actually bring to the table?</div>
-    <div class="q-hint">This one decides everything. Be honest.</div>
-    <div class="options">
-      <div class="option" data-val="10" onclick="pickOption(this)">I'm consistent, I communicate, and I make his life noticeably better</div>
-      <div class="option" data-val="8" onclick="pickOption(this)">I'm fun, loyal, and I don't manufacture drama</div>
-      <div class="option" data-val="5" onclick="pickOption(this)">I look good and I try my best — work in progress</div>
-      <div class="option" data-val="1" onclick="pickOption(this)">I need a lot but I give a lot too... when I feel like it</div>
-    </div>
-    <div class="nav">
-      <button class="btn btn-back" onclick="prevSection()">← Back</button>
-      <span></span>
-      <button class="btn btn-next" id="nextBtn9" onclick="showResult()" disabled>Submit Application 💌</button>
-    </div>
-  </div>
-
-  <!-- ======= RESULT ======= -->
-  <div id="result">
-    <div class="result-emoji" id="rEmoji"></div>
-    <h2 id="rTitle"></h2>
-    <div class="score-badge" id="rScore"></div>
-    <div class="score-breakdown" id="rBreakdown"></div>
-    <div class="verdict" id="rVerdict"></div>
-    <p class="sub" id="rSub"></p>
-    <button class="btn-restart" onclick="restartAll()">Reapply 🔁</button>
-  </div>
-
+<div class="card" id="card">
+  <div class="top"><span class="logo">GF HR DEPT.</span><span class="hearts" id="hearts">❤️❤️❤️</span></div>
+  <div class="bar"><i id="bar"></i></div>
+  <div id="stage"></div>
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
-// ============================
-// STATE
-// ============================
-let name = '';
-let scores = { scenarios: 0, reaction: 0, rapidfire: 0, decode: 0 };
-let currentSection = 1;
-const totalSections = 9;
+const $=s=>document.querySelector(s);
+const stage=$('#stage');
+const S={name:'',pts:{vibes:0,flags:0,swipe:0,texts:0,lie:0,rapid:0},max:{vibes:40,flags:15,swipe:10,texts:15,lie:10,rapid:10},notes:[]};
+const rand=a=>a[Math.floor(Math.random()*a.length)];
+let step=0;
 
-// rapid fire questions
-const rfQuestions = [
-  { q: "Would you rather...", a: "Know his location 24/7", b: "Trust him completely without tracking" },
-  { q: "Would you rather...", a: "He texts back in 3 seconds always", b: "He's present and focused when you're together" },
-  { q: "Would you rather...", a: "Be the hotter one in the relationship", b: "Be the funnier one" },
-  { q: "Would you rather...", a: "He's your best friend but the spark fades over time", b: "Intense chemistry but you argue a lot" },
-  { q: "Would you rather...", a: "He buys you expensive gifts sometimes", b: "He shows up consistently every single day" }
-];
-// B is always the 'better' answer for scoring
-let rfIndex = 0, rfScore = 0, rfTimer = null, rfTimeLeft = 0;
-let decodeScore = 0, d1done = false, d2done = false;
-let reactionScore = 0;
+function toast(msg,title='HR NOTE'){const t=$('#toast');t.innerHTML=`<b>${title}</b>${msg}`;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2600)}
+function shake(){const c=$('#card');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
+function hearts(){const p=Object.values(S.pts).reduce((a,b)=>a+b,0),m=Object.values(S.max).reduce((a,b)=>a+b,0);
+  const done=STEPS.slice(0,step).reduce((a,s)=>a+(s.w||0),0)||1;const r=p/done;$('#hearts').textContent=r>.75?'❤️❤️❤️':r>.5?'❤️❤️🖤':r>.25?'❤️🖤🖤':'🖤🖤🖤'}
+function next(delay=0){setTimeout(()=>{step++;render()},delay)}
 
-// ============================
-// NAVIGATION
-// ============================
-function showSection(n) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  const el = document.getElementById('s' + n);
-  if (el) el.classList.add('active');
-  currentSection = n;
-  const pct = Math.round((n - 1) / totalSections * 100);
-  document.getElementById('progress').style.width = pct + '%';
+/* ---------- step types ---------- */
+function choice(o){return{w:10,run(){
+  stage.innerHTML=`<span class="tag ${o.spicy?'spicy':''}">${o.tag}</span><h2>${o.q}</h2><p class="hint">${o.hint}</p>`+
+  o.opts.map((x,i)=>`<button class="opt" data-i="${i}">${x[0]}</button>`).join('');
+  stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    stage.querySelectorAll('.opt').forEach(z=>z.onclick=null);b.classList.add('pick');
+    const [,pts,note]=o.opts[b.dataset.i];S.pts.vibes+=pts;if(pts<4){shake();S.notes.push(o.flag)}
+    toast(note,pts>=8?'✅ HR APPROVES':pts>=4?'🤨 HR IS WATCHING':'🚩 FLAGGED');next(2700)})}}}
 
-  // game inits
-  if (n === 4) initReactionGame();
-  if (n === 6) initRapidFire();
-}
+const STEPS=[
+{run(){stage.innerHTML=`<span class="tag">Now hiring · 1 position</span>
+<h1>Girlfriend<br>Application™</h1>
+<p class="scribble">he's picky, good luck</p>
+<p class="hint" style="margin-top:14px">6 scenarios. 5 mini games. 1 lie detector. 0 do-overs. Your results will be screenshotted and discussed in the group chat.</p>
+<button class="big" id="go">Start my application 💅</button>
+<button class="big alt" id="no">I'm not interested</button>
+<p class="fine">By tapping start you agree that "I'm fine" is not a valid answer to anything on this form.</p>`;
+$('#go').onclick=()=>next();
+const n=$('#no');let c=0;const lines=['Are you sure?','Think about it','Wrong button 🙂','That button is decorative','Ok now you HAVE to apply'];
+n.onclick=()=>{n.textContent=lines[Math.min(c,lines.length-1)];n.style.transform=`translate(${(Math.random()-.5)*120}px,${(Math.random()-.3)*40}px) rotate(${(Math.random()-.5)*20}deg)`;if(++c>5)next()}}},
 
-function nextSection() { showSection(currentSection + 1); }
-function prevSection() { showSection(currentSection - 1); }
+{run(){stage.innerHTML=`<span class="tag">Section 1 · Applicant</span><h2>Legal first name?</h2><p class="hint">Nicknames like "baby girl" will be rejected by the system.</p>
+<input class="name" id="nm" placeholder="Type here..." maxlength="20" autocomplete="off"><button class="big" id="ok" disabled>Continue →</button>`;
+const i=$('#nm'),b=$('#ok');i.focus();i.oninput=()=>b.disabled=i.value.trim().length<2;
+b.onclick=()=>{S.name=i.value.trim();const n=S.name.toLowerCase();
+ toast(/^(ashley|brittany|becky|karen|stacy)$/.test(n)?`${S.name}... ok. We've had some ${S.name}s before. Proceed carefully.`:`${S.name}. Pretty name. That's +0 points but he noticed.`);next(2200)}}},
 
-// ============================
-// Q1: NAME
-// ============================
-function handleName() {
-  name = document.getElementById('nameInput').value.trim();
-  document.getElementById('nextBtn').disabled = name.length < 2;
-}
+choice({tag:'Scenario 01',q:"It's 2am. He's out with the boys. Last text was \"lol\" three hours ago.",hint:'We already know what you did last time.',flag:'2am meltdown',opts:[
+ ["Sleep. He's a grown man with a phone charger.",10,"Peaceful. Mature. Suspiciously well-rested."],
+ ["One \"you good?\" and that's it",8,"Healthy. Normal. He'll reply at 4am with a blurry photo of a taco."],
+ ["Check his location 11 times",2,"The Find My app has filed a restraining order."],
+ ["Post a thirst trap so he sees it",1,"Tactical. Evil. Honestly kind of impressive. Still flagged."]]}),
 
-// ============================
-// OPTION PICKER (scenarios)
-// ============================
-function pickOption(el) {
-  const parent = el.closest('.section');
-  parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  scores.scenarios += parseInt(el.dataset.val);
-  // enable next button for this section
-  const secId = parent.id.replace('s','');
-  const nb = document.getElementById('nextBtn' + secId);
-  if (nb) nb.disabled = false;
-  // disable options after pick
-  parent.querySelectorAll('.option').forEach(o => { o.onclick = null; o.style.cursor = 'default'; });
-}
+{w:15,run(){
+ const R=["checks his phone 🕵️‍♀️","'we need to talk'","'I'm not like other girls'","likes his friend's pics","'k.' 😐","screenshots to group chat","'do what you want'","hates his mom","cries at his playoffs loss","'who's Jessica??'"],
+       G=["sends memes 😂","cooks pasta 🍝","has hobbies","hypes him up","'you hungry?'","likes the gym","laughs at his jokes","gives back rubs"];
+ stage.innerHTML=`<span class="tag game">Mini game 1 · Red Flag Rush</span><h2>Smash the 🚩 red flags. Don't touch the green ones.</h2>
+ <div class="hud"><span id="sc">Score 0</span><span id="tm">⏱ 15</span></div><div class="arena" id="ar"></div><button class="big" id="st">Start 🚩</button>`;
+ let score=0,t=15,live=true,items=[];const ar=$('#ar');
+ $('#st').onclick=()=>{$('#st').remove();
+  const spawn=setInterval(()=>{if(!live)return;const red=Math.random()<.6,el=document.createElement('div');
+   el.className='fall '+(red?'r':'g');el.textContent=red?'🚩 '+rand(R):'🟢 '+rand(G);el.style.left=Math.random()*(ar.clientWidth-170)+'px';el.style.top='-30px';ar.appendChild(el);
+   const o={el,y:-30,v:1.4+Math.random()*1.6+(15-t)*.12,red};items.push(o);
+   el.onpointerdown=()=>{if(!live)return;const p=document.createElement('div');p.className='pop';p.style.left=el.style.left;p.style.top=o.y+'px';
+    if(red){score++;p.textContent='+1 💥';p.style.color='#ff2e7e'}else{score=Math.max(0,score-2);p.textContent='-2 that was nice!';p.style.color='#2a2';shake()}
+    ar.appendChild(p);setTimeout(()=>p.remove(),700);el.remove();items=items.filter(x=>x!==o);$('#sc').textContent='Score '+score}},520);
+  const loop=()=>{items.forEach(o=>{o.y+=o.v;o.el.style.top=o.y+'px';if(o.y>350){o.el.remove();o.gone=true}});items=items.filter(o=>!o.gone);if(live)requestAnimationFrame(loop)};loop();
+  const clock=setInterval(()=>{t--;$('#tm').textContent='⏱ '+t;if(t<=0){live=false;clearInterval(clock);clearInterval(spawn);
+   S.pts.flags=Math.min(15,score);
+   toast(score>=15?`${score} red flags destroyed. You'd survive his exes.`:score>=8?`${score} flags. Decent radar. Some slipped through, like they always do.`:`${score}?? Babe you ARE the red flag.`,'🚩 RESULTS');next(2800)}},1000)}}},
 
-// ============================
-// GAME 1: REACTION TEST
-// ============================
-function initReactionGame() {
-  document.getElementById('tapBtn').disabled = true;
-  document.getElementById('tapBtn').textContent = 'Waiting for his message...';
-  document.getElementById('reactionResult').textContent = '';
-  document.getElementById('newMsg').classList.add('hidden');
-  document.getElementById('nextBtn4').disabled = true;
+choice({spicy:1,tag:'🌶️ Scenario 02',q:"Friday night, his place. He's exhausted from the week. You...",hint:'No wrong answers. Some very wrong answers.',flag:'made his bad day about her',opts:[
+ ["Order food, put on something (a show, or 👀), let him decompress — then make it a night he tells no one about 😏",10,"HR had to step outside for a minute. Approved."],
+ ["Massage + his favorite drink without being asked",9,"This is how you get a key to his apartment."],
+ ["Ask \"what's wrong\" 14 times",3,"He was fine. Now he is not fine."],
+ ["Get mad he's tired and make it about me",0,"The tiredness was contagious. Now he's tired of you."]]}),
 
-  const delay = 1500 + Math.random() * 3000;
-  setTimeout(() => {
-    document.getElementById('newMsg').classList.remove('hidden');
-    window._reactionStart = Date.now();
-    const btn = document.getElementById('tapBtn');
-    btn.disabled = false;
-    btn.textContent = '💬 TAP NOW — Reply to him!';
-    btn.style.background = 'linear-gradient(135deg, #27ae60, #1abc9c)';
-  }, delay);
-}
+{w:10,run(){
+ const Q=[["🎮","He plays 2K until 3am on weeknights"],["🧴","His entire bathroom is one bottle of 3-in-1"],["🏈","He says \"we\" about a team he's never played for"],["🥵","He wants to cuddle but overheats in 6 minutes"],["🍗","He eats the last wing without asking"],["😴","He falls asleep 4 minutes into every movie you pick"],["📸","He takes the worst photos of you. Every time."]];
+ let i=0,acc=0;
+ const draw=()=>{if(i>=Q.length){S.pts.swipe=Math.round(acc/Q.length*10);
+   toast(acc>=6?`You accepted ${acc}/7 of his flaws. That's love. Or low standards. Either works.`:acc>=4?`${acc}/7. You'll tolerate him. That's basically marriage.`:`You rejected ${Q.length-acc}/7. Girl he is a MAN, what did you expect.`,'💘 FLAW TOLERANCE');next(2800);return}
+  stage.innerHTML=`<span class="tag game">Mini game 2 · Deal or Dealbreaker</span><h2>His real flaws. Can you live with it?</h2><p class="hint">Card ${i+1} of ${Q.length}</p>
+  <div class="swipe"><div class="sc" id="c"><div class="e">${Q[i][0]}</div><p>${Q[i][1]}</p></div></div>
+  <div class="row"><button class="big alt" id="n">❌ Dealbreaker</button><button class="big" id="y">💘 I'll deal</button></div>`;
+  const go=(ok)=>{$('#c').classList.add(ok?'outR':'outL');if(ok)acc++;i++;setTimeout(draw,380)};
+  $('#y').onclick=()=>go(1);$('#n').onclick=()=>go(0)};draw()}},
 
-function tapReaction() {
-  const elapsed = Date.now() - window._reactionStart;
-  document.getElementById('tapBtn').disabled = true;
-  let msg, score;
-  if (elapsed < 600) { msg = "Under 0.6 seconds 😂 You were literally watching the screen. Relax."; score = 5; }
-  else if (elapsed < 1500) { msg = `${elapsed}ms — Fast. You care but you're not desperate. Solid.`; score = 10; }
-  else if (elapsed < 3500) { msg = `${elapsed}ms — Normal. He'll live.`; score = 8; }
-  else if (elapsed < 7000) { msg = `${elapsed}ms — You kept him waiting a bit. That's power actually.`; score = 6; }
-  else { msg = `${elapsed}ms — He already assumed you're asleep or unbothered. Either is fine.`; score = 4; }
-  scores.reaction = score;
-  document.getElementById('reactionResult').textContent = msg;
-  document.getElementById('nextBtn4').disabled = false;
-}
+{w:15,run(){
+ const R=[
+  {him:"wyd",opts:[["nothing, wbu 😊",5,"Classic. Clean. Leaves the door open."],["why? 🤨",1,"He was just going to invite you to dinner. Was."],["*sends a 4 paragraph update of my day*",2,"He asked 3 letters. You answered with a novel."],["thinking about you 🙂",5,"Short. Deadly. He's already putting on shoes."]]},
+  {him:"my mom wants to meet you",opts:[["omg yes, what does she like? I'll bring something",5,"His mom already likes you more than him."],["is she gonna judge me?",3,"Honest. Slightly nervous. Relatable."],["already? we've been together 2 weeks",2,"Correct observation. Wrong energy."],["does she know about me being better than your ex",1,"His mom would love that. His mom would also never forget it."]]},
+  {him:"u up? 🌙",opts:[["depends who's asking 😏",5,"He is asking. Loudly."],["yes, why",3,"Ok HR agent. Loosen up."],["it's 1am go to sleep",1,"He was going to be sweet. Now he's going to sleep."],["*leaves on read for 3 hours then says 'sorry was sleeping'*",4,"Power move. Risky. Respected."]]}];
+ let r=0;const phone=[];
+ const draw=()=>{if(r>=R.length){toast(S.pts.texts>=13?'Texting game is elite. He screenshots your replies to show his friends.':S.pts.texts>=9?'Solid texter. Occasional HR violations.':'Your texting needs a manager. We will assign one.','📱 TEXT SCORE');next(2600);return}
+  const c=R[r];
+  stage.innerHTML=`<span class="tag game">Mini game 3 · Reply Game</span><h2>He texted. Pick your reply.</h2>
+  <div class="phone" id="ph"><div class="ph-head">him 🖤 · iMessage</div>${phone.join('')}<div class="typing" id="ty">•••</div></div><div id="op"></div>`;
+  setTimeout(()=>{$('#ty').outerHTML=`<div class="bub him">${c.him}</div>`;
+   $('#op').innerHTML=c.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o[0]}</button>`).join('');
+   $('#op').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const o=c.opts[b.dataset.i];S.pts.texts+=o[1];if(o[1]<3)shake();
+    phone.push(`<div class="bub him">${c.him}</div>`,`<div class="bub me">${o[0]}</div>`);$('#op').innerHTML='';
+    $('#ph').insertAdjacentHTML('beforeend',`<div class="bub me">${o[0]}</div>`);toast(o[2]);r++;setTimeout(draw,2400)})},900)};draw()}},
 
-// ============================
-// GAME 2: RAPID FIRE
-// ============================
-function initRapidFire() {
-  rfIndex = 0; rfScore = 0;
-  document.getElementById('rfDone').style.display = 'none';
-  document.getElementById('rfGame').style.display = 'block';
-  document.getElementById('nextBtn6').disabled = true;
-  document.getElementById('rfBackBtn').disabled = true;
-  loadRFQuestion();
-}
+choice({spicy:1,tag:'🌶️ Scenario 03',q:"He tells you something he's always wanted to try. In the bedroom. You...",hint:'Maturity test. Breathe.',flag:'told the group chat about the bedroom thing',opts:[
+ ["Hear him out, say what I'm into too, and no weird energy either way",10,"Communication AND open-mindedness? HR is filing this under 'rare species'."],
+ ["\"Hm. Maybe. Buy me dinner first\" 😌",8,"Negotiator. Respect. Dinner is reasonable."],
+ ["Make a face then tell the group chat",2,"The group chat now knows. HE now knows the group chat knows."],
+ ["\"Did your EX do that??\"",0,"Somehow made it about the ex. Olympic level."]]}),
 
-function loadRFQuestion() {
-  if (rfIndex >= rfQuestions.length) { endRapidFire(); return; }
-  const q = rfQuestions[rfIndex];
-  document.getElementById('rfQ').textContent = `${rfIndex+1}/5 — ${q.q}`;
-  document.getElementById('rfA').textContent = q.a;
-  document.getElementById('rfA').className = 'rf-opt';
-  document.getElementById('rfB').textContent = q.b;
-  document.getElementById('rfB').className = 'rf-opt';
-  document.getElementById('rfScoreDisplay').textContent = `Score: ${rfScore}/${rfIndex}`;
-  document.getElementById('rfA').onclick = () => pickRF('A');
-  document.getElementById('rfB').onclick = () => pickRF('B');
-  startRFTimer();
-}
+{w:10,run(){
+ const qs=["I have never gone through a man's phone.","I don't care how many followers his ex has.","I've never made a finsta to stalk someone.","I would be fine if he had a girl best friend."];
+ const q=rand(qs);
+ stage.innerHTML=`<span class="tag game">Mini game 4 · Lie Detector</span><h2>Place your thumb on the sensor and read this out loud:</h2>
+ <p class="scribble" style="font-size:26px;margin:4px 0 14px">"${q}"</p>
+ <canvas class="poly" id="cv" width="800" height="300"></canvas><div class="verdict" id="vd">&nbsp;</div>
+ <button class="big hold" id="hb">👆 HOLD TO SCAN (3 sec)</button>`;
+ const cv=$('#cv'),x=cv.getContext('2d');let pts=[],hold=false,t0=0,done=false,raf;
+ const draw=()=>{x.fillStyle='#fffdf5';x.fillRect(0,0,800,300);x.strokeStyle='#eee';for(let g=0;g<800;g+=40){x.beginPath();x.moveTo(g,0);x.lineTo(g,300);x.stroke()}
+  const el=hold?(Date.now()-t0)/3000:0,amp=hold?20+el*120:4;pts.push(150+(Math.random()-.5)*amp*2);if(pts.length>160)pts.shift();
+  x.strokeStyle='#ff2e7e';x.lineWidth=4;x.beginPath();pts.forEach((p,i)=>i?x.lineTo(i*5,p):x.moveTo(0,p));x.stroke();
+  if(hold&&!done){$('#hb').textContent=`Scanning... ${Math.min(100,Math.round(el*100))}%`;if(el>=1)finish()}
+  if(!done||pts.length<160)raf=requestAnimationFrame(draw)};draw();
+ const finish=()=>{done=true;hold=false;const lie=Math.random()<.85;const v=$('#vd');
+  v.textContent=lie?'🚨 LIE DETECTED 🚨':'✅ TRUTH (somehow)';v.style.color=lie?'#ff3b30':'#1a1';if(lie)shake();
+  S.pts.lie=lie?6:10;$('#hb').textContent=lie?'The machine is never wrong':'The machine is shocked too';$('#hb').disabled=true;
+  toast(lie?"It's ok. Everyone lies on this one. We gave you partial credit for bravery.":"Either you're a saint or you've beaten a polygraph before. Both are hot.",'🔬 SCAN COMPLETE');setTimeout(()=>{cancelAnimationFrame(raf);next()},3000)};
+ const hb=$('#hb');
+ hb.onpointerdown=e=>{if(done)return;e.preventDefault();hold=true;t0=Date.now()};
+ const up=()=>{if(hold&&!done){hold=false;hb.textContent='You let go 😭 sus. Hold again';shake()}};hb.onpointerup=up;hb.onpointerleave=up;hb.oncontextmenu=e=>e.preventDefault()}},
 
-function startRFTimer() {
-  rfTimeLeft = 800; // 8 seconds × 100 steps
-  clearInterval(rfTimer);
-  rfTimer = setInterval(() => {
-    rfTimeLeft--;
-    document.getElementById('timerBar').style.width = (rfTimeLeft / 800 * 100) + '%';
-    if (rfTimeLeft <= 0) { clearInterval(rfTimer); pickRF('timeout'); }
-  }, 10);
-}
+{w:10,run(){
+ const Q=[["Know his location 24/7","Never need to check"],["He texts back in 3 seconds","He's fully present when you're together"],["$5k gift once a year","He shows up every single day"],["Be the hotter one","Be the funnier one"],["He's your best friend","He's your \"situationship\""]],good=[1,1,1,-1,0];
+ let i=0,s=0,iv;
+ const draw=()=>{clearInterval(iv);if(i>=Q.length){S.pts.rapid=Math.min(10,s*2.5);
+   toast(s>=4?'Speed AND sanity. You were built for this.':s>=2?'Mixed results. The timer exposed a few things.':'The pressure revealed your true self. We saw it. We cannot unsee it.','⚡ RAPID FIRE');next(2600);return}
+  stage.innerHTML=`<span class="tag game">Mini game 5 · Rapid Fire</span><h2>Would you rather...</h2><p class="hint">${i+1}/5 · 4 seconds · no thinking allowed</p>
+  <div class="timer"><i id="ti"></i></div><div class="vs"><button class="opt" data-k="0">${Q[i][0]}</button><button class="opt" data-k="1">${Q[i][1]}</button></div><p class="or">choose. NOW.</p>`;
+  let left=400;iv=setInterval(()=>{left--;$('#ti').style.width=left/4+'%';$('#ti').style.background=left<120?'#ff3b30':'';if(left<=0){clearInterval(iv);toast('Too slow. Indecisive. Like picking a restaurant.','⏰ TIME');i++;setTimeout(draw,900)}},10);
+  stage.querySelectorAll('.vs .opt').forEach(b=>b.onclick=()=>{clearInterval(iv);b.classList.add('pick');const k=+b.dataset.k;
+   if(good[i]===-1||good[i]===k)s++;else if(k===0&&i!==4){shake()}i++;setTimeout(draw,500)})};draw()}},
 
-function pickRF(choice) {
-  clearInterval(rfTimer);
-  document.getElementById('rfA').onclick = null;
-  document.getElementById('rfB').onclick = null;
-  if (choice === 'B') { rfScore++; document.getElementById('rfB').classList.add('picked-b'); }
-  else if (choice === 'A') { document.getElementById('rfA').classList.add('picked-a'); }
-  document.getElementById('rfScoreDisplay').textContent = `Score: ${rfScore}/${rfIndex+1}`;
-  rfIndex++;
-  setTimeout(loadRFQuestion, 600);
-}
+choice({tag:'Scenario 04',q:"He gets a promotion / closes a big deal. First thing you do?",hint:'How you show up for his wins says everything.',flag:'got weird about his success',opts:[
+ ["Scream, hug him, celebrate like it's mine too",10,"Main character's girlfriend behavior. Approved."],
+ ["Take him to dinner, tell him I'm proud",9,"Classy. Warm. He's calling his mom about you."],
+ ["\"Congrats! so... about that bag I wanted\"",3,"The pivot was so fast he got whiplash."],
+ ["Get quiet and weird about it",0,"Felt threatened by a man's PowerPoint. Flagged."]]}),
 
-function endRapidFire() {
-  document.getElementById('rfGame').style.display = 'none';
-  document.getElementById('rfDone').style.display = 'block';
-  scores.rapidfire = rfScore * 2;
-  const msgs = [
-    [5, "5/5 🏆 You're either genuinely chill or you've done this before."],
-    [4, "4/5 — Above average. The one you got wrong is suspicious though."],
-    [3, "3/5 — Exactly average. Make of that what you will."],
-    [2, "2/5 — Some concerning instincts here. We noted them."],
-    [0, "We'll move on. Let's not discuss the timer ones."]
-  ];
-  let msg = msgs[4];
-  for (const [min, text] of msgs) { if (rfScore >= min) { msg = [min, text]; break; } }
-  document.getElementById('rfDoneEmoji').textContent = rfScore >= 4 ? '🏆' : rfScore >= 3 ? '😌' : '🤔';
-  document.getElementById('rfDoneMsg').textContent = msg[1];
-  document.getElementById('nextBtn6').disabled = false;
-}
+choice({tag:'Final question',q:"Real talk. What do you actually bring to the table?",hint:'This one decides everything.',flag:'brings a table but no food',opts:[
+ ["Consistency, loyalty, and I make his life better",10,"That's the whole job description. Word for word."],
+ ["Fun, zero drama, and I'm hot. Next question.",9,"Confidence noted. Committee nodded aggressively."],
+ ["I'm a work in progress 🥲",6,"Honest. Growth mindset. We respect it."],
+ ["I don't bring anything, I AM the table",2,"...HR needs a minute."]]}),
 
-// ============================
-// GAME 3: TEXT DECODER
-// ============================
-function pickDecode(el, id, correct) {
-  // prevent re-picking
-  const container = document.getElementById(id === 'd1' ? 'decode1' : 'decode2');
-  container.querySelectorAll('.decode-opt').forEach(o => { o.onclick = null; o.style.cursor = 'default'; });
-  el.classList.add('selected');
-  const fb = document.getElementById(id === 'd1' ? 'fb1' : 'fb2');
-  fb.style.display = 'block';
-  if (correct) {
-    decodeScore += 5;
-    fb.className = 'decode-feedback good';
-    fb.textContent = id === 'd1'
-      ? '✅ Correct. "k" is punctuation, not a war declaration. You passed.'
-      : '✅ Correct. Men are notoriously bad at time. He\'s on his way. Stay calm.';
-    if (id === 'd1') { d1done = true; setTimeout(() => { document.getElementById('decode2').style.display = 'block'; }, 600); }
-    if (id === 'd2') { d2done = true; checkDecodeComplete(); }
-  } else {
-    fb.className = 'decode-feedback bad';
-    fb.textContent = id === 'd1'
-      ? '❌ It\'s one letter. He replied. That\'s the whole story. Do not send a paragraph.'
-      : '❌ The caps lock response would have ended this. Noted.';
-    if (id === 'd1') { d1done = true; setTimeout(() => { document.getElementById('decode2').style.display = 'block'; }, 800); }
-    if (id === 'd2') { d2done = true; checkDecodeComplete(); }
-  }
-  scores.decode = decodeScore;
-}
+{run(){
+ stage.innerHTML=`<span class="tag">Section 9 · Binding agreement</span><h2>Sign the girlfriend contract.</h2>
+ <div class="contract"><b>Terms & Conditions</b><ol style="margin-top:6px">
+ <li>Applicant agrees "I'm fine" means she is fine.</li><li>Restaurant must be selected within 90 seconds of "where do you wanna eat".</li>
+ <li>Hoodies borrowed become her property. This is non-negotiable (for him).</li><li>Game day is sacred. Halftime is available for emotional discussions.</li>
+ <li>She may steal fries. Up to 30% of fries.</li><li>Fighting over text is prohibited. Call like the ancestors.</li>
+ <li>Good morning texts are mandatory. Bad morning texts also accepted.</li><li>This contract auto-renews unless someone forgets an anniversary.</li></ol></div>
+ <canvas class="sig" id="sg" width="800" height="300"></canvas><p class="fine" style="margin-top:6px">✍️ Sign above with your finger</p>
+ <button class="big" id="sb" disabled>Submit application 💌</button>`;
+ const c=$('#sg'),x=c.getContext('2d');let d=false,len=0;x.lineWidth=6;x.lineCap='round';x.strokeStyle='#111';
+ const p=e=>{const r=c.getBoundingClientRect();return[(e.clientX-r.left)*800/r.width,(e.clientY-r.top)*300/r.height]};
+ c.onpointerdown=e=>{d=true;c.setPointerCapture(e.pointerId);x.beginPath();x.moveTo(...p(e))};
+ c.onpointermove=e=>{if(!d)return;x.lineTo(...p(e));x.stroke();if(++len>25)$('#sb').disabled=false};c.onpointerup=()=>d=false;
+ $('#sb').onclick=()=>{stage.innerHTML=`<div style="text-align:center;padding-top:120px"><div style="font-size:60px">🧑‍⚖️</div><h2 id="rv">Committee reviewing...</h2><p class="hint" id="rs">Consulting his group chat</p></div>`;
+  const msgs=['Checking with his mom','Asking his best friend','Zooming into your Instagram','Reading your 2019 tweets','Final vote...'];let k=0;
+  const iv=setInterval(()=>{$('#rs').textContent=msgs[k++];if(k>msgs.length){clearInterval(iv);next()}},700)}}},
 
-function checkDecodeComplete() {
-  if (d1done && d2done) document.getElementById('nextBtn8').disabled = false;
-}
+{run(){
+ const got=Object.values(S.pts).reduce((a,b)=>a+b,0),max=Object.values(S.max).reduce((a,b)=>a+b,0);
+ const pct=Math.max(3,Math.min(100,Math.round(got/max*100)));
+ const tier=pct>=82?{s:'HIRED',c:'#1a1',e:'💍',t:'Application APPROVED',v:`Congratulations ${S.name}. You passed the scenarios, survived the lie detector, and texted like a professional. The committee voted unanimously (1–0). Report to your first date immediately.`}
+  :pct>=65?{s:'SHORTLIST',c:'#e6a100',e:'😏',t:'Strong candidate',v:`${S.name}, you're close. Really close. A few answers made HR raise one eyebrow, but the other eyebrow is still in your favor. Final round: in-person interview. Dress code: whatever makes him forget his password.`}
+  :pct>=45?{s:'WAITLIST',c:'#ff7a00',e:'📋',t:'Waitlisted',v:`${S.name}, there's potential here, buried under a few things we will not be discussing publicly. You're #3 on the waitlist. Positions open up often. He is very bad at relationships.`}
+  :{s:'REJECTED',c:'#ff3b30',e:'💀',t:'Application received...',v:`${S.name}, thank you for applying. Your file has been placed in a very special folder. The folder is on fire. But honestly? You were fun to review and the committee laughed a lot.`};
+ const flags=S.notes.length?`<p class="fine" style="color:#ff3b30;margin-top:10px">🚩 Flagged: ${S.notes.join(' · ')}</p>`:`<p class="fine" style="color:#1a1;margin-top:10px">🟢 Zero flags. Suspicious. We'll keep watching.</p>`;
+ stage.innerHTML=`<div class="cert"><div class="stamp" style="color:${tier.c};border-color:${tier.c}">${tier.s}</div>
+ <div style="font-size:46px">${tier.e}</div><p class="fine" style="margin:4px 0 0">OFFICIAL GIRLFRIEND ASSESSMENT</p>
+ <h2 style="margin-top:6px">${S.name}</h2><div class="pct">${pct}%</div><p style="font-weight:800">girlfriend material</p>
+ <div class="pills"><span class="pill">🧠 Vibes ${S.pts.vibes}/40</span><span class="pill">🚩 Flags ${S.pts.flags}/15</span><span class="pill">💘 Tolerance ${S.pts.swipe}/10</span><span class="pill">📱 Texting ${S.pts.texts}/15</span><span class="pill">🔬 Honesty ${S.pts.lie}/10</span><span class="pill">⚡ Speed ${Math.round(S.pts.rapid)}/10</span></div>
+ <p style="font-size:14px;line-height:1.5;text-align:left">${tier.v}</p>${flags}</div>
+ <button class="big" id="sh">📸 Send my results to him</button><button class="big alt" id="rt">Reapply (we won't tell)</button>`;
+ $('#bar').style.width='100%';
+ if(pct>=65)for(let i=0;i<60;i++){const e=document.createElement('div');e.className='conf';e.textContent=rand(['💖','💍','✨','🎉','💅','🌹']);e.style.left=Math.random()*100+'vw';e.style.animationDuration=2+Math.random()*3+'s';e.style.animationDelay=Math.random()*1.5+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),6000)}
+ $('#sh').onclick=async()=>{const txt=`I just scored ${pct}% on your Girlfriend Application™ (${tier.s}) 😤 ${location.href}`;
+  if(navigator.share){try{await navigator.share({text:txt})}catch(e){}}else{navigator.clipboard.writeText(txt);toast('Copied. Paste it in his DMs. Confidently.','📋 COPIED')}};
+ $('#rt').onclick=()=>location.reload()}}];
 
-// ============================
-// RESULT
-// ============================
-function showResult() {
-  document.getElementById('header-area').style.display = 'none';
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  const total = scores.scenarios + scores.reaction + scores.rapidfire + scores.decode;
-  const max = 56 + 10 + 10 + 10; // scenarios max ~56, reaction 10, rf 10, decode 10
-  const pct = Math.min(100, Math.round(total / 76 * 100));
-  const n = name || 'Applicant';
-
-  document.getElementById('result').style.display = 'block';
-  document.getElementById('rScore').textContent = pct + '% Girlfriend Material';
-
-  document.getElementById('rBreakdown').innerHTML = `
-    <div class="score-pill">📍 Scenarios: ${scores.scenarios}pts</div>
-    <div class="score-pill">⚡ Reaction: ${scores.reaction}pts</div>
-    <div class="score-pill">🔥 Rapid Fire: ${scores.rapidfire}pts</div>
-    <div class="score-pill">🔍 Text Decode: ${scores.decode}pts</div>
-  `;
-
-  let emoji, title, verdict, sub;
-  if (pct >= 80) {
-    emoji = '✅'; title = `${n} — Application Approved`;
-    verdict = `<strong>Assessment:</strong> You passed the scenarios, the reflex test didn't expose you as obsessive, you picked the sane answers in rapid fire, and you correctly identified that "k" is not a breakup. This is genuinely rare.<br><br><strong>Verdict:</strong> Position offered. Show up exactly as advertised and we won't have any problems.`;
-    sub = 'First date terms to be negotiated. Dress accordingly.';
-  } else if (pct >= 62) {
-    emoji = '🤔'; title = `${n} — Strong Candidate`;
-    verdict = `<strong>Assessment:</strong> Solid mostly. A couple of answers revealed instincts we're keeping a close eye on — specifically the rapid fire section and the text decode. The instincts are there but the execution needs one more lap.<br><br><strong>Verdict:</strong> Shortlisted. Pending in-person evaluation where the real you comes out.`;
-    sub = 'Do not rehearse. That\'s exactly how you get caught.';
-  } else if (pct >= 42) {
-    emoji = '📋'; title = `${n} — Under Consideration`;
-    verdict = `<strong>Assessment:</strong> There's promise here buried under some concerning patterns. The "k" paragraph response and the 2am behavior were flagged. These are coachable — barely.<br><br><strong>Verdict:</strong> Waitlisted at position 3. Work on the communication question first. That's the one that almost ended this.`;
-    sub = 'Reapply in 30 days with evidence of growth.';
-  } else {
-    emoji = '📩'; title = `${n} — Application Received`;
-    verdict = `<strong>Assessment:</strong> Your application was received, reviewed by the full committee, and discussed at length. The discussion was very short.<br><br><strong>Verdict:</strong> At this time we are unable to move forward. The all-caps location check at 2am and the "send a paragraph" response to 'k' required a separate emergency meeting.`;
-    sub = 'Awareness is step one. You just completed it. Progress.';
-  }
-
-  document.getElementById('rEmoji').textContent = emoji;
-  document.getElementById('rTitle').textContent = title;
-  document.getElementById('rVerdict').innerHTML = verdict;
-  document.getElementById('rSub').textContent = sub;
-}
-
-// ============================
-// RESTART
-// ============================
-function restartAll() {
-  name = ''; scores = { scenarios: 0, reaction: 0, rapidfire: 0, decode: 0 };
-  decodeScore = 0; d1done = false; d2done = false; reactionScore = 0;
-  document.getElementById('nameInput').value = '';
-  document.querySelectorAll('.option').forEach(o => {
-    o.classList.remove('selected');
-    o.style.cursor = 'pointer';
-    o.onclick = function() { pickOption(this); };
-  });
-  // re-enable scenario next buttons
-  ['2','3','5','7','9'].forEach(n => {
-    const nb = document.getElementById('nextBtn' + n);
-    if (nb) nb.disabled = true;
-  });
-  // reset decode
-  document.querySelectorAll('.decode-opt').forEach(o => {
-    o.classList.remove('selected');
-    o.style.cursor = 'pointer';
-  });
-  document.querySelectorAll('.decode-feedback').forEach(f => f.style.display = 'none');
-  document.getElementById('decode2').style.display = 'none';
-  document.getElementById('nextBtn8').disabled = true;
-  document.getElementById('result').style.display = 'none';
-  document.getElementById('header-area').style.display = 'block';
-  document.getElementById('nextBtn').disabled = true;
-  showSection(1);
-}
-
-// init
-document.getElementById('progress').style.width = '0%';
+function render(){$('#bar').style.width=(step/(STEPS.length-1)*100)+'%';hearts();STEPS[step].run()}
+render();
 </script>
 </body>
 </html>
