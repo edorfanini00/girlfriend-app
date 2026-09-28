@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Girlfriend Application™ · Official Hiring Portal</title>
+<title>Edoardo's Girlfriend Application™</title>
 <meta name="description" content="1 position open. Applications reviewed by a highly biased committee.">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
 <style>
@@ -114,9 +114,9 @@ function choice(o){return{w:10,run(){
 
 const STEPS=[
 {run(){stage.innerHTML=`<span class="tag">Now hiring · 1 position</span>
-<h1>Girlfriend<br>Application™</h1>
-<p class="scribble">he's picky, good luck</p>
-<p class="hint" style="margin-top:14px">6 scenarios. 5 mini games. 1 lie detector. 0 do-overs. Your results will be screenshotted and discussed in the group chat.</p>
+<h1>Edoardo's<br>Girlfriend<br>Application™</h1>
+<p class="scribble">he's Italian and he's picky, good luck</p>
+<p class="hint" style="margin-top:14px">6 scenarios. 5 mini games. 1 lie detector. 0 do-overs. Your results will be reviewed by Edoardo, his dog, and possibly his mom.</p>
 <button class="big" id="go">Start my application 💅</button>
 <button class="big alt" id="no">I'm not interested</button>
 <p class="fine">By tapping start you agree that "I'm fine" is not a valid answer to anything on this form.</p>`;
@@ -130,15 +130,15 @@ const i=$('#nm'),b=$('#ok');i.focus();i.oninput=()=>b.disabled=i.value.trim().le
 b.onclick=()=>{S.name=i.value.trim();const n=S.name.toLowerCase();
  toast(/^(ashley|brittany|becky|karen|stacy)$/.test(n)?`${S.name}... ok. We've had some ${S.name}s before. Proceed carefully.`:`${S.name}. Pretty name. That's +0 points but he noticed.`);next(2200)}}},
 
-choice({tag:'Scenario 01',q:"It's 2am. He's out with the boys. Last text was \"lol\" three hours ago.",hint:'We already know what you did last time.',flag:'2am meltdown',opts:[
- ["Sleep. He's a grown man with a phone charger.",10,"Peaceful. Mature. Suspiciously well-rested."],
- ["One \"you good?\" and that's it",8,"Healthy. Normal. He'll reply at 4am with a blurry photo of a taco."],
- ["Check his location 11 times",2,"The Find My app has filed a restraining order."],
- ["Post a thirst trap so he sees it",1,"Tactical. Evil. Honestly kind of impressive. Still flagged."]]}),
+choice({tag:'Scenario 01',q:"It's 2am. Edoardo is still on his laptop running like 4 companies. He said \"5 more minutes\" at 11pm.",hint:'We already know what you did last time.',flag:'2am meltdown',opts:[
+ ["Bring him an espresso and go to sleep",10,"He will marry you. Possibly tonight, between two emails."],
+ ["Send one \"come to bed\" and leave it",8,"Healthy. He'll show up at 4am saying \"ok I'm done\" (he is not done)."],
+ ["Close his laptop for him",2,"He had 3 things deploying. You just ended a startup."],
+ ["Complain that he loves work more than me",1,"He doesn't. But now he's working on a reply to that too."]]}),
 
 {w:15,run(){
- const R=["checks his phone 🕵️‍♀️","'we need to talk'","'I'm not like other girls'","likes his friend's pics","'k.' 😐","screenshots to group chat","'do what you want'","hates his mom","cries at his playoffs loss","'who's Jessica??'"],
-       G=["sends memes 😂","cooks pasta 🍝","has hobbies","hypes him up","'you hungry?'","likes the gym","laughs at his jokes","gives back rubs"];
+ const R=["checks his phone 🕵️‍♀️","'we need to talk'","'I'm not like other girls'","likes his friend's pics","'k.' 😐","screenshots to group chat","'do what you want'","hates his dog","talks during F1 quali","'Messi or Ronaldo? who cares'"],
+       G=["sends memes 😂","cooks real carbonara 🍝","has hobbies","hypes him up","'you hungry?'","knows what DRS is","laughs at his jokes","loves his dog"];
  stage.innerHTML=`<span class="tag game">Mini game 1 · Red Flag Rush</span><h2>Smash the 🚩 red flags. Don't touch the green ones.</h2>
  <div class="hud"><span id="sc">Score 0</span><span id="tm">⏱ 15</span></div><div class="arena" id="ar"></div><button class="big" id="st">Start 🚩</button>`;
  let score=0,t=15,live=true,items=[];const ar=$('#ar');
@@ -161,10 +161,10 @@ choice({spicy:1,tag:'🌶️ Scenario 02',q:"Friday night, his place. He's exhau
  ["Get mad he's tired and make it about me",0,"The tiredness was contagious. Now he's tired of you."]]}),
 
 {w:10,run(){
- const Q=[["🎮","He plays 2K until 3am on weeknights"],["🧴","His entire bathroom is one bottle of 3-in-1"],["🏈","He says \"we\" about a team he's never played for"],["🥵","He wants to cuddle but overheats in 6 minutes"],["🍗","He eats the last wing without asking"],["😴","He falls asleep 4 minutes into every movie you pick"],["📸","He takes the worst photos of you. Every time."]];
+ const Q=[["💻","He works 14 hour days and calls it \"a light week\""],["🏎️","Sunday race start at 9am is NOT negotiable"],["⚽","He screams at the TV during Champions League like they can hear him"],["🥵","He wants to cuddle but overheats in 6 minutes"],["🍝","Pineapple on pizza = instant breakup. He means it."],["🐶","His dog sleeps in the bed. The dog was here first."],["📱","He answers \"one quick call\" during dinner. It's never quick."]];
  let i=0,acc=0;
  const draw=()=>{if(i>=Q.length){S.pts.swipe=Math.round(acc/Q.length*10);
-   toast(acc>=6?`You accepted ${acc}/7 of his flaws. That's love. Or low standards. Either works.`:acc>=4?`${acc}/7. You'll tolerate him. That's basically marriage.`:`You rejected ${Q.length-acc}/7. Girl he is a MAN, what did you expect.`,'💘 FLAW TOLERANCE');next(2800);return}
+   toast(acc>=6?`You accepted ${acc}/7 of his flaws. That's love. Or low standards. Either works.`:acc>=4?`${acc}/7. You'll tolerate him. That's basically marriage.`:`You rejected ${Q.length-acc}/7. Girl he's an Italian workaholic with a dog, what did you expect.`,'💘 FLAW TOLERANCE');next(2800);return}
   stage.innerHTML=`<span class="tag game">Mini game 2 · Deal or Dealbreaker</span><h2>His real flaws. Can you live with it?</h2><p class="hint">Card ${i+1} of ${Q.length}</p>
   <div class="swipe"><div class="sc" id="c"><div class="e">${Q[i][0]}</div><p>${Q[i][1]}</p></div></div>
   <div class="row"><button class="big alt" id="n">❌ Dealbreaker</button><button class="big" id="y">💘 I'll deal</button></div>`;
@@ -215,21 +215,21 @@ choice({spicy:1,tag:'🌶️ Scenario 03',q:"He tells you something he's always 
  const up=()=>{if(hold&&!done){hold=false;hb.textContent='You let go 😭 sus. Hold again';shake()}};hb.onpointerup=up;hb.onpointerleave=up;hb.oncontextmenu=e=>e.preventDefault()}},
 
 {w:10,run(){
- const Q=[["Know his location 24/7","Never need to check"],["He texts back in 3 seconds","He's fully present when you're together"],["$5k gift once a year","He shows up every single day"],["Be the hotter one","Be the funnier one"],["He's your best friend","He's your \"situationship\""]],good=[1,1,1,-1,0];
+ const Q=[["Watch F1 with him at 9am Sunday","Sleep in alone"],["He's always free","He's building something big and busy"],["Olive Garden","His nonna's recipe"],["Ferrari fan","Red Bull fan"],["He's your best friend","He's your \"situationship\""]],good=[0,1,1,-1,0];
  let i=0,s=0,iv;
  const draw=()=>{clearInterval(iv);if(i>=Q.length){S.pts.rapid=Math.min(10,s*2.5);
    toast(s>=4?'Speed AND sanity. You were built for this.':s>=2?'Mixed results. The timer exposed a few things.':'The pressure revealed your true self. We saw it. We cannot unsee it.','⚡ RAPID FIRE');next(2600);return}
   stage.innerHTML=`<span class="tag game">Mini game 5 · Rapid Fire</span><h2>Would you rather...</h2><p class="hint">${i+1}/5 · 4 seconds · no thinking allowed</p>
   <div class="timer"><i id="ti"></i></div><div class="vs"><button class="opt" data-k="0">${Q[i][0]}</button><button class="opt" data-k="1">${Q[i][1]}</button></div><p class="or">choose. NOW.</p>`;
-  let left=400;iv=setInterval(()=>{left--;$('#ti').style.width=left/4+'%';$('#ti').style.background=left<120?'#ff3b30':'';if(left<=0){clearInterval(iv);toast('Too slow. Indecisive. Like picking a restaurant.','⏰ TIME');i++;setTimeout(draw,900)}},10);
+  let left=400;iv=setInterval(()=>{left--;$('#ti').style.width=left/4+'%';$('#ti').style.background=left<120?'#ff3b30':'';if(left<=0){clearInterval(iv);toast('Too slow. Verstappen would have lapped you.','⏰ TIME');i++;setTimeout(draw,900)}},10);
   stage.querySelectorAll('.vs .opt').forEach(b=>b.onclick=()=>{clearInterval(iv);b.classList.add('pick');const k=+b.dataset.k;
    if(good[i]===-1||good[i]===k)s++;else if(k===0&&i!==4){shake()}i++;setTimeout(draw,500)})};draw()}},
 
-choice({tag:'Scenario 04',q:"He gets a promotion / closes a big deal. First thing you do?",hint:'How you show up for his wins says everything.',flag:'got weird about his success',opts:[
- ["Scream, hug him, celebrate like it's mine too",10,"Main character's girlfriend behavior. Approved."],
- ["Take him to dinner, tell him I'm proud",9,"Classy. Warm. He's calling his mom about you."],
+choice({tag:'Scenario 04',q:"Edoardo just closed a big deal / launched something new. First thing you do?",hint:'How you show up for his wins says everything.',flag:'got weird about his success',opts:[
+ ["Scream, hug him, open the good wine",10,"Main character's girlfriend behavior. Approved."],
+ ["Take him to dinner and ban his phone for 2 hours",9,"Classy. Warm. He's calling his mom about you."],
  ["\"Congrats! so... about that bag I wanted\"",3,"The pivot was so fast he got whiplash."],
- ["Get quiet and weird about it",0,"Felt threatened by a man's PowerPoint. Flagged."]]}),
+ ["Get quiet and weird about it",0,"Felt threatened by a man's Stripe dashboard. Flagged."]]}),
 
 choice({tag:'Final question',q:"Real talk. What do you actually bring to the table?",hint:'This one decides everything.',flag:'brings a table but no food',opts:[
  ["Consistency, loyalty, and I make his life better",10,"That's the whole job description. Word for word."],
@@ -241,8 +241,8 @@ choice({tag:'Final question',q:"Real talk. What do you actually bring to the tab
  stage.innerHTML=`<span class="tag">Section 9 · Binding agreement</span><h2>Sign the girlfriend contract.</h2>
  <div class="contract"><b>Terms & Conditions</b><ol style="margin-top:6px">
  <li>Applicant agrees "I'm fine" means she is fine.</li><li>Restaurant must be selected within 90 seconds of "where do you wanna eat".</li>
- <li>Hoodies borrowed become her property. This is non-negotiable (for him).</li><li>Game day is sacred. Halftime is available for emotional discussions.</li>
- <li>She may steal fries. Up to 30% of fries.</li><li>Fighting over text is prohibited. Call like the ancestors.</li>
+ <li>Hoodies borrowed become her property. This is non-negotiable (for him).</li><li>Race weekends and Champions League nights are sacred. Emotional discussions available during safety cars and halftime only.</li><li>The dog outranks her in the first 6 months. After that it's a tie.</li><li>"Just 5 more minutes" at the laptop means 45. She accepts this.</li>
+ <li>No cutting spaghetti. No ketchup on pasta. Ever.</li><li>Fighting over text is prohibited. Call like the ancestors.</li>
  <li>Good morning texts are mandatory. Bad morning texts also accepted.</li><li>This contract auto-renews unless someone forgets an anniversary.</li></ol></div>
  <canvas class="sig" id="sg" width="800" height="300"></canvas><p class="fine" style="margin-top:6px">✍️ Sign above with your finger</p>
  <button class="big" id="sb" disabled>Submit application 💌</button>`;
@@ -251,15 +251,15 @@ choice({tag:'Final question',q:"Real talk. What do you actually bring to the tab
  c.onpointerdown=e=>{d=true;c.setPointerCapture(e.pointerId);x.beginPath();x.moveTo(...p(e))};
  c.onpointermove=e=>{if(!d)return;x.lineTo(...p(e));x.stroke();if(++len>25)$('#sb').disabled=false};c.onpointerup=()=>d=false;
  $('#sb').onclick=()=>{stage.innerHTML=`<div style="text-align:center;padding-top:120px"><div style="font-size:60px">🧑‍⚖️</div><h2 id="rv">Committee reviewing...</h2><p class="hint" id="rs">Consulting his group chat</p></div>`;
-  const msgs=['Checking with his mom','Asking his best friend','Zooming into your Instagram','Reading your 2019 tweets','Final vote...'];let k=0;
+  const msgs=['Asking his dog','Checking with his Italian mom','Zooming into your Instagram','Checking if you know who Leclerc is','Final vote...'];let k=0;
   const iv=setInterval(()=>{$('#rs').textContent=msgs[k++];if(k>msgs.length){clearInterval(iv);next()}},700)}}},
 
 {run(){
  const got=Object.values(S.pts).reduce((a,b)=>a+b,0),max=Object.values(S.max).reduce((a,b)=>a+b,0);
  const pct=Math.max(3,Math.min(100,Math.round(got/max*100)));
- const tier=pct>=82?{s:'HIRED',c:'#1a1',e:'💍',t:'Application APPROVED',v:`Congratulations ${S.name}. You passed the scenarios, survived the lie detector, and texted like a professional. The committee voted unanimously (1–0). Report to your first date immediately.`}
-  :pct>=65?{s:'SHORTLIST',c:'#e6a100',e:'😏',t:'Strong candidate',v:`${S.name}, you're close. Really close. A few answers made HR raise one eyebrow, but the other eyebrow is still in your favor. Final round: in-person interview. Dress code: whatever makes him forget his password.`}
-  :pct>=45?{s:'WAITLIST',c:'#ff7a00',e:'📋',t:'Waitlisted',v:`${S.name}, there's potential here, buried under a few things we will not be discussing publicly. You're #3 on the waitlist. Positions open up often. He is very bad at relationships.`}
+ const tier=pct>=82?{s:'HIRED',c:'#1a1',e:'💍',t:'Application APPROVED',v:`Congratulations ${S.name}. You passed the scenarios, survived the lie detector, and texted like a professional. The committee voted unanimously (1–0). Report to your first date immediately. He's picking the Italian place, don't argue.`}
+  :pct>=65?{s:'SHORTLIST',c:'#e6a100',e:'😏',t:'Strong candidate',v:`${S.name}, you're close. Really close. A few answers made HR raise one eyebrow, but the other eyebrow is still in your favor. Final round: in-person interview. Dress code: whatever makes him close his laptop.`}
+  :pct>=45?{s:'WAITLIST',c:'#ff7a00',e:'📋',t:'Waitlisted',v:`${S.name}, there's potential here, buried under a few things we will not be discussing publicly. You're #3 on the waitlist. Positions open up often. He is usually busy working.`}
   :{s:'REJECTED',c:'#ff3b30',e:'💀',t:'Application received...',v:`${S.name}, thank you for applying. Your file has been placed in a very special folder. The folder is on fire. But honestly? You were fun to review and the committee laughed a lot.`};
  const flags=S.notes.length?`<p class="fine" style="color:#ff3b30;margin-top:10px">🚩 Flagged: ${S.notes.join(' · ')}</p>`:`<p class="fine" style="color:#1a1;margin-top:10px">🟢 Zero flags. Suspicious. We'll keep watching.</p>`;
  stage.innerHTML=`<div class="cert"><div class="stamp" style="color:${tier.c};border-color:${tier.c}">${tier.s}</div>
@@ -270,7 +270,7 @@ choice({tag:'Final question',q:"Real talk. What do you actually bring to the tab
  <button class="big" id="sh">📸 Send my results to him</button><button class="big alt" id="rt">Reapply (we won't tell)</button>`;
  $('#bar').style.width='100%';
  if(pct>=65)for(let i=0;i<60;i++){const e=document.createElement('div');e.className='conf';e.textContent=rand(['💖','💍','✨','🎉','💅','🌹']);e.style.left=Math.random()*100+'vw';e.style.animationDuration=2+Math.random()*3+'s';e.style.animationDelay=Math.random()*1.5+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),6000)}
- $('#sh').onclick=async()=>{const txt=`I just scored ${pct}% on your Girlfriend Application™ (${tier.s}) 😤 ${location.href}`;
+ $('#sh').onclick=async()=>{const txt=`I just scored ${pct}% on Edoardo's Girlfriend Application™ (${tier.s}) 😤 ${location.href}`;
   if(navigator.share){try{await navigator.share({text:txt})}catch(e){}}else{navigator.clipboard.writeText(txt);toast('Copied. Paste it in his DMs. Confidently.','📋 COPIED')}};
  $('#rt').onclick=()=>location.reload()}}];
 
