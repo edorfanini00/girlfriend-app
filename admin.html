@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Applications · HR</title>
+<style>
+body{font-family:-apple-system,Inter,system-ui,sans-serif;background:#fff7fb;color:#222;margin:0;padding:20px;max-width:900px;margin-inline:auto}
+h1{font-size:22px;margin:6px 0 16px}
+.login{max-width:340px;margin:80px auto;background:#fff;border:2px solid #222;border-radius:16px;padding:22px;box-shadow:6px 6px 0 #ff2e7e}
+input{width:100%;box-sizing:border-box;font-size:17px;padding:12px;border:2px solid #222;border-radius:10px;margin:8px 0 12px}
+button{font-size:16px;font-weight:800;padding:12px 18px;border:2px solid #222;border-radius:12px;background:#ff2e7e;color:#fff;cursor:pointer;box-shadow:4px 4px 0 #222}
+.card{background:#fff;border:2px solid #222;border-radius:16px;padding:14px 16px;margin:12px 0;box-shadow:5px 5px 0 #222}
+.head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;cursor:pointer}
+.pct{font-size:30px;font-weight:900}
+.tier{font-weight:900;padding:3px 10px;border-radius:999px;border:2px solid;font-size:13px}
+.meta{color:#777;font-size:13px;margin-left:auto}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.pill{font-size:12px;background:#f3f3f3;border-radius:999px;padding:3px 9px}
+.flags{color:#ff3b30;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;display:none}
+td,th{text-align:left;padding:6px 6px;border-top:1px solid #eee;vertical-align:top}
+th{color:#888;font-weight:700;font-size:11px;text-transform:uppercase}
+.open table{display:table}
+.bad{color:#ff3b30}.good{color:#1a1}
+.top{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.top input{margin:0;width:240px}
+.err{color:#ff3b30;font-weight:700}
+</style></head><body>
+<div id="app"></div>
+<script>
+const $=s=>document.querySelector(s);
+async function load(){
+  const r=await fetch('/api/admin',{cache:'no-store'});
+  if(r.status===401)return login();
+  const {apps}=await r.json();render(apps)}
+function login(msg=''){
+  $('#app').innerHTML=`<div class="login"><h1>HR login 🔐</h1><input id="pw" type="password" placeholder="password" autofocus><button id="go">Enter</button><p class="err">${msg}</p></div>`;
+  const go=async()=>{const r=await fetch('/api/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('#pw').value})});
+    if(r.ok)load();else login('Wrong password')};
+  $('#go').onclick=go;$('#pw').onkeydown=e=>{if(e.key==='Enter')go()}}
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function render(apps){
+  const col={HIRED:'#1a1',SHORTLIST:'#e6a100',WAITLIST:'#ff7a00',REJECTED:'#ff3b30'};
+  $('#app').innerHTML=`<h1>Girlfriend applications · ${apps.length}</h1>
+  <div class="top"><input id="q" placeholder="search name"><button id="rf">Refresh</button></div><div id="list"></div>`;
+  const draw=()=>{const q=($('#q').value||'').toLowerCase();
+   $('#list').innerHTML=apps.filter(a=>a.name.toLowerCase().includes(q)).map((a,i)=>`<div class="card" id="c${i}">
+    <div class="head" onclick="document.getElementById('c${i}').classList.toggle('open')">
+      <span class="pct">${a.pct}%</span><span class="tier" style="color:${col[a.tier]||'#222'};border-color:${col[a.tier]||'#222'}">${esc(a.tier)}</span>
+      <b style="font-size:18px">${esc(a.name)}</b><span class="meta">${new Date(a.ts).toLocaleString()} · ${a.seconds||'?'}s</span></div>
+    <div class="pills"><span class="pill">🧠 Vibes ${a.pts?.vibes}/40</span><span class="pill">🚩 Flags ${a.pts?.flags}/15</span><span class="pill">💘 Tolerance ${a.pts?.swipe}/10</span><span class="pill">📱 Texting ${a.pts?.texts}/15</span><span class="pill">🔬 Honesty ${a.pts?.lie}/10</span><span class="pill">⚡ Speed ${Math.round(a.pts?.rapid||0)}/10</span></div>
+    ${a.notes?.length?`<div class="flags">🚩 ${a.notes.map(esc).join(' · ')}</div>`:''}
+    <table><tr><th>Step</th><th>Question</th><th>Her answer</th><th>Pts</th></tr>
+    ${(a.log||[]).map(l=>`<tr><td>${esc(l.step)}</td><td>${esc(l.q)}</td><td><b>${esc(l.a)}</b></td><td class="${l.pts>=4||l.pts===1?'good':l.pts<=2?'bad':''}">${l.pts}</td></tr>`).join('')}
+    </table></div>`).join('')||'<p>No applications yet.</p>'};
+  $('#q').oninput=draw;$('#rf').onclick=load;draw()}
+load();
+</script></body></html>

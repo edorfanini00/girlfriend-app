@@ -93,7 +93,7 @@ canvas.sig{width:100%;height:150px;border:3px dashed var(--ink);border-radius:18
 <script>
 const $=s=>document.querySelector(s);
 const stage=$('#stage');
-const S={name:'',pts:{vibes:0,flags:0,swipe:0,texts:0,lie:0,rapid:0},max:{vibes:40,flags:15,swipe:10,texts:15,lie:10,rapid:10},notes:[]};
+const S={name:'',pts:{vibes:0,flags:0,swipe:0,texts:0,lie:0,rapid:0},max:{vibes:40,flags:15,swipe:10,texts:15,lie:10,rapid:10},notes:[],log:[],t0:Date.now()};
 const rand=a=>a[Math.floor(Math.random()*a.length)];
 let step=0;
 
@@ -109,7 +109,7 @@ function choice(o){return{w:10,run(){
   o.opts.map((x,i)=>`<button class="opt" data-i="${i}">${x[0]}</button>`).join('');
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
     stage.querySelectorAll('.opt').forEach(z=>z.onclick=null);b.classList.add('pick');
-    const [,pts,note]=o.opts[b.dataset.i];S.pts.vibes+=pts;if(pts<4){shake();S.notes.push(o.flag)}
+    const [txt,pts,note]=o.opts[b.dataset.i];S.log.push({step:o.tag,q:o.q,a:txt,pts});S.pts.vibes+=pts;if(pts<4){shake();S.notes.push(o.flag)}
     toast(note,pts>=8?'✅ HR APPROVES':pts>=4?'🤨 HR IS WATCHING':'🚩 FLAGGED');next(2700)})}}}
 
 const STEPS=[
@@ -151,7 +151,7 @@ choice({tag:'Scenario 01',q:"It's 2am. Edoardo is still on his laptop running li
     ar.appendChild(p);setTimeout(()=>p.remove(),700);el.remove();items=items.filter(x=>x!==o);$('#sc').textContent='Score '+score}},520);
   const loop=()=>{items.forEach(o=>{o.y+=o.v;o.el.style.top=o.y+'px';if(o.y>350){o.el.remove();o.gone=true}});items=items.filter(o=>!o.gone);if(live)requestAnimationFrame(loop)};loop();
   const clock=setInterval(()=>{t--;$('#tm').textContent='⏱ '+t;if(t<=0){live=false;clearInterval(clock);clearInterval(spawn);
-   S.pts.flags=Math.min(15,score);
+   S.pts.flags=Math.min(15,score);S.log.push({step:'Mini game 1 · Red Flag Rush',q:'flags smashed',a:String(score),pts:S.pts.flags});
    toast(score>=15?`${score} red flags destroyed. You'd survive his exes.`:score>=8?`${score} flags. Decent radar. Some slipped through, like they always do.`:`${score}?? Babe you ARE the red flag.`,'🚩 RESULTS');next(2800)}},1000)}}},
 
 choice({spicy:1,tag:'🌶️ Scenario 02',q:"Friday night, his place. He's exhausted from the week. You...",hint:'No wrong answers. Some very wrong answers.',flag:'made his bad day about her',opts:[
@@ -168,7 +168,7 @@ choice({spicy:1,tag:'🌶️ Scenario 02',q:"Friday night, his place. He's exhau
   stage.innerHTML=`<span class="tag game">Mini game 2 · Deal or Dealbreaker</span><h2>His real flaws. Can you live with it?</h2><p class="hint">Card ${i+1} of ${Q.length}</p>
   <div class="swipe"><div class="sc" id="c"><div class="e">${Q[i][0]}</div><p>${Q[i][1]}</p></div></div>
   <div class="row"><button class="big alt" id="n">❌ Dealbreaker</button><button class="big" id="y">💘 I'll deal</button></div>`;
-  const go=(ok)=>{$('#c').classList.add(ok?'outR':'outL');if(ok)acc++;i++;setTimeout(draw,380)};
+  const go=(ok)=>{$('#c').classList.add(ok?'outR':'outL');S.log.push({step:'Mini game 2 · Dealbreaker',q:Q[i][1],a:ok?"I'll deal":'Dealbreaker',pts:ok?1:0});if(ok)acc++;i++;setTimeout(draw,380)};
   $('#y').onclick=()=>go(1);$('#n').onclick=()=>go(0)};draw()}},
 
 {w:15,run(){
@@ -183,7 +183,7 @@ choice({spicy:1,tag:'🌶️ Scenario 02',q:"Friday night, his place. He's exhau
   <div class="phone" id="ph"><div class="ph-head">him 🖤 · iMessage</div>${phone.join('')}<div class="typing" id="ty">•••</div></div><div id="op"></div>`;
   setTimeout(()=>{$('#ty').outerHTML=`<div class="bub him">${c.him}</div>`;
    $('#op').innerHTML=c.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o[0]}</button>`).join('');
-   $('#op').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const o=c.opts[b.dataset.i];S.pts.texts+=o[1];if(o[1]<3)shake();
+   $('#op').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const o=c.opts[b.dataset.i];S.log.push({step:'Mini game 3 · Reply',q:'him: '+c.him,a:o[0],pts:o[1]});S.pts.texts+=o[1];if(o[1]<3)shake();
     phone.push(`<div class="bub him">${c.him}</div>`,`<div class="bub me">${o[0]}</div>`);$('#op').innerHTML='';
     $('#ph').insertAdjacentHTML('beforeend',`<div class="bub me">${o[0]}</div>`);toast(o[2]);r++;setTimeout(draw,2400)})},900)};draw()}},
 
@@ -208,7 +208,7 @@ choice({spicy:1,tag:'🌶️ Scenario 03',q:"He tells you something he's always 
   if(!done||pts.length<160)raf=requestAnimationFrame(draw)};draw();
  const finish=()=>{done=true;hold=false;const lie=Math.random()<.85;const v=$('#vd');
   v.textContent=lie?'🚨 LIE DETECTED 🚨':'✅ TRUTH (somehow)';v.style.color=lie?'#ff3b30':'#1a1';if(lie)shake();
-  S.pts.lie=lie?6:10;$('#hb').textContent=lie?'The machine is never wrong':'The machine is shocked too';$('#hb').disabled=true;
+  S.pts.lie=lie?6:10;S.log.push({step:'Mini game 4 · Lie Detector',q:q,a:lie?'LIE DETECTED':'TRUTH',pts:S.pts.lie});$('#hb').textContent=lie?'The machine is never wrong':'The machine is shocked too';$('#hb').disabled=true;
   toast(lie?"It's ok. Everyone lies on this one. We gave you partial credit for bravery.":"Either you're a saint or you've beaten a polygraph before. Both are hot.",'🔬 SCAN COMPLETE');setTimeout(()=>{cancelAnimationFrame(raf);next()},3000)};
  const hb=$('#hb');
  hb.onpointerdown=e=>{if(done)return;e.preventDefault();hold=true;t0=Date.now()};
@@ -221,8 +221,8 @@ choice({spicy:1,tag:'🌶️ Scenario 03',q:"He tells you something he's always 
    toast(s>=4?'Speed AND sanity. You were built for this.':s>=2?'Mixed results. The timer exposed a few things.':'The pressure revealed your true self. We saw it. We cannot unsee it.','⚡ RAPID FIRE');next(2600);return}
   stage.innerHTML=`<span class="tag game">Mini game 5 · Rapid Fire</span><h2>Would you rather...</h2><p class="hint">${i+1}/5 · 4 seconds · no thinking allowed</p>
   <div class="timer"><i id="ti"></i></div><div class="vs"><button class="opt" data-k="0">${Q[i][0]}</button><button class="opt" data-k="1">${Q[i][1]}</button></div><p class="or">choose. NOW.</p>`;
-  let left=400;iv=setInterval(()=>{left--;$('#ti').style.width=left/4+'%';$('#ti').style.background=left<120?'#ff3b30':'';if(left<=0){clearInterval(iv);toast('Too slow. Verstappen would have lapped you.','⏰ TIME');i++;setTimeout(draw,900)}},10);
-  stage.querySelectorAll('.vs .opt').forEach(b=>b.onclick=()=>{clearInterval(iv);b.classList.add('pick');const k=+b.dataset.k;
+  let left=400;iv=setInterval(()=>{left--;$('#ti').style.width=left/4+'%';$('#ti').style.background=left<120?'#ff3b30':'';if(left<=0){clearInterval(iv);toast('Too slow. Verstappen would have lapped you.','⏰ TIME');S.log.push({step:'Mini game 5 · Rapid Fire',q:Q[i][0]+' vs '+Q[i][1],a:'(too slow)',pts:0});i++;setTimeout(draw,900)}},10);
+  stage.querySelectorAll('.vs .opt').forEach(b=>b.onclick=()=>{clearInterval(iv);b.classList.add('pick');const k=+b.dataset.k;S.log.push({step:'Mini game 5 · Rapid Fire',q:Q[i][0]+' vs '+Q[i][1],a:Q[i][k],pts:(good[i]===-1||good[i]===k)?1:0});
    if(good[i]===-1||good[i]===k)s++;else if(k===0&&i!==4){shake()}i++;setTimeout(draw,500)})};draw()}},
 
 choice({tag:'Scenario 04',q:"Edoardo just closed a big deal / launched something new. First thing you do?",hint:'How you show up for his wins says everything.',flag:'got weird about his success',opts:[
@@ -269,6 +269,7 @@ choice({tag:'Final question',q:"Real talk. What do you actually bring to the tab
  <p style="font-size:14px;line-height:1.5;text-align:left">${tier.v}</p>${flags}</div>
  <button class="big" id="sh">📸 Send my results to him</button><button class="big alt" id="rt">Reapply (we won't tell)</button>`;
  $('#bar').style.width='100%';
+ fetch('/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:S.name,pct,tier:tier.s,pts:S.pts,notes:S.notes,log:S.log,seconds:Math.round((Date.now()-S.t0)/1000),ua:navigator.userAgent})}).catch(()=>{});
  if(pct>=65)for(let i=0;i<60;i++){const e=document.createElement('div');e.className='conf';e.textContent=rand(['💖','💍','✨','🎉','💅','🌹']);e.style.left=Math.random()*100+'vw';e.style.animationDuration=2+Math.random()*3+'s';e.style.animationDelay=Math.random()*1.5+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),6000)}
  $('#sh').onclick=async()=>{const txt=`I just scored ${pct}% on Edoardo's Girlfriend Application™ (${tier.s}) 😤 ${location.href}`;
   if(navigator.share){try{await navigator.share({text:txt})}catch(e){}}else{navigator.clipboard.writeText(txt);toast('Copied. Paste it in his DMs. Confidently.','📋 COPIED')}};
